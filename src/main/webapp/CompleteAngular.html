@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<script src="js/angular.min.js"></script>
+</head>
+<body>
+
+<div ng-app="myClick" ng-controller="myClickCtrl">
+    <h1 ng-click="changeName()">{{firstname}}</h1>
+</div>
+
+<script>
+var app = angular.module('myClick', []);
+app.controller('myClickCtrl', function($scope) {
+    $scope.firstname = "John";
+    $scope.changeName = function() {
+        $scope.firstname = "Nelly";
+    }
+});
+</script>
+
+<p>Click on the header to run the "changeName" function.</p>
+
+<p>This example demonstrates how to use the controller to change model data.</p>
+
+</body>
+</html>
