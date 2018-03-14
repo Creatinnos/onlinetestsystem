@@ -7,21 +7,26 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
-import com.creatinnos.onlinetestsystem.model.Question;
+import org.apache.log4j.Logger;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import com.creatinnos.onlinetestsystem.bo.Question;
+import com.creatinnos.onlinetestsystem.model.ChoiceType;
 
 public class BusinessObject implements InvocationHandler {
+	/* Get actual class name to be printed on */
+	static Logger log = Logger.getLogger(BusinessObject.class.getName());
 
-	public Object intefaceClass;
+	private Object intefaceClass;
+	private static JdbcTemplate con = null;
 
 	private BusinessObject(Class<?> intefaceClass) {
-
 		this.intefaceClass = intefaceClass;
-	}
-
-	private BusinessObject() {
-
+		con = CreateConnection.getConnection();
 	}
 
 	public Object invoke(Object proxy, Method method, Object[] args)
@@ -33,15 +38,37 @@ public class BusinessObject implements InvocationHandler {
 			Field nameField = null;
 			try {
 				nameField = result.getClass().getField(name.toUpperCase());
+				Column column = nameField.getAnnotation(Column.class);
+				switch (column.columnType()) {
+				case BIGINT:
+					return nameField.get(this);
+				case INT:
+					return nameField.get(this);
+				case STRING:
+					return nameField.get(this);
+				case LIST:
+					String s1=(String)nameField.get(this);
+					String replace = s1.replace("[","").replace("]","");
+					List<String> myList = new ArrayList<String>(Arrays.asList(replace.split(",")));
+
+					return myList;
+				case ENUM:
+					if(nameField.get(this)!=null  && !nameField.get(this).equals("choiceType"))
+					{
+						System.out.println(column.enumValue().getName());
+						System.out.println(nameField.get(this)+"ss");
+						return Enum.valueOf((Class<? extends Enum>)Class.forName(column.enumValue().getName()),(String) nameField.get(this));
+					}
+				}
 			} catch (NoSuchFieldException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.error(e.getLocalizedMessage());
 			} catch (SecurityException e) {
+				log.error(e.getLocalizedMessage());
+			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
-			return intefaceClass;// nameField.get(result);
+			return nameField.get(this);
 		} else if (methodName.startsWith("set")) {
 			String name = methodName.substring(methodName.indexOf("set") + 3);
 			try {
@@ -52,195 +79,329 @@ public class BusinessObject implements InvocationHandler {
 				modifiers = modifiers & ~Modifier.FINAL;
 				modifierField.setAccessible(true);
 				modifierField.setInt(nameField, modifiers);
-				nameField.set(intefaceClass, args[0]);
+				Column column = nameField.getAnnotation(Column.class);
+				switch (column.columnType()) {
+				case BIGINT:
+					nameField.set(intefaceClass, args[0]);
+					break;
+				case INT:
+					nameField.set(intefaceClass, args[0]);
+					break;
+				case STRING:
+					nameField.set(intefaceClass, args[0]);
+					break;
+				case LIST:
+					nameField.set(intefaceClass, args[0].toString());
+					break;
+				case ENUM:
+					Enum st=Enum.valueOf((Class<? extends Enum>)Class.forName(column.enumValue().getName()),args[0].toString());
+					nameField.set(intefaceClass, st.name());
+					//nameField.set(intefaceClass,ChoiceType.CHECKBOX.toString());
+					break;
+				}
+				return nameField;
 			} catch (NoSuchFieldException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.error(e.getLocalizedMessage());
 			} catch (SecurityException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.error(e.getLocalizedMessage());
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.error(e.getLocalizedMessage());
 			}
 			return intefaceClass;
 		} else if (methodName.startsWith("is")) {
 			String name = methodName.substring(methodName.indexOf("is") + 2);
-			System.out.println(name);
-			return intefaceClass;
+			return name;
 		}
 		return intefaceClass;
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T> T create1(Class<T> boInterfaceClass) {
+	public static <T> T create(Class<T> boInterfaceClass) {
 		BusinessObject handler = new BusinessObject(boInterfaceClass.getClass());
-
-		T s = (T) Proxy.newProxyInstance(boInterfaceClass.getClassLoader(), new Class[] { boInterfaceClass }, handler);
-
-		System.out.println(s.getClass().getInterfaces()[0].getCanonicalName());
 		return (T) Proxy.newProxyInstance(boInterfaceClass.getClassLoader(), new Class[] { boInterfaceClass }, handler);
 	}
 
-	/*
-	 * @SuppressWarnings("unchecked") public static <T> T create123(Class<T>
-	 * boInterfaceClass) { Handler handler = new Handler(If.class); return
-	 * (T)Proxy.newProxyInstance(If.class.getClassLoader(), new Class[] {
-	 * If.class }, handler); }
-	 */
 	public static void save(Object object) {
-
+		insertQuery(object);
 	}
 
 	public static void saveOrUpdate(Object object) {
-
+		updateQuery(object);
 	}
 
-	public static String frameQuery(Object question) {
+	private static String insertQuery(Object question) {
 		Class<?> class1 = question.getClass();
-		Method methods[] = class1.getMethods();
+		Field[] fields = class1.getFields();
+		String insertingFields = "", insertingFieldsValues = "", tableName = "";
 		Class<?> c = question.getClass().getInterfaces()[0];
-		if (c.isAnnotationPresent((Class<? extends Table>) Table.class)) {
-			Table ta = c.getAnnotation(Table.class);
-			System.out.println(ta.tableName());
-		}
-		Field[] fields=class1.getFields();
-		if(fields!=null)
-		{
-			for(int i=0;i<fields.length;i++)
-			{
-				Field field=fields[i];
+		Table table = c.getAnnotation(Table.class);
+		tableName = table.tableName();
+		if (fields != null) {
+			for (int i = 0; i < fields.length; i++) {
+				Field field = fields[i];
 				try {
-					System.out.println(field.get(question));
+					if (field != null && field.getName() != null && field.get(question) != null) {
+						String fieldValue = (String) field.get(question);
+						if (!fieldValue.toLowerCase().equals(field.getName().toLowerCase())) {
+							Column column = field.getAnnotation(Column.class);
+							insertingFields = insertingFields + column.columnName() + ",";
+
+							switch (column.columnType()) {
+							case BIGINT:
+								insertingFieldsValues = insertingFieldsValues + fieldValue + ",";
+								break;
+							case INT:
+								insertingFieldsValues = insertingFieldsValues + fieldValue + ",";
+								break;
+							case STRING:
+								insertingFieldsValues = insertingFieldsValues + "'" + fieldValue + "',";
+								break;
+							case ENUM:
+								insertingFieldsValues = insertingFieldsValues + "'" + fieldValue + "',";
+								break;
+							case LIST:
+								insertingFieldsValues = insertingFieldsValues + "'" + fieldValue + "',";
+								break;
+							default:
+								break;
+							}
+						}
+					}
 				} catch (IllegalArgumentException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					log.error(e.getLocalizedMessage());
 				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					log.error(e.getLocalizedMessage());
 				}
 			}
-			
+			System.out.println(insertingFields);
+			System.out.println(insertingFieldsValues);
+			String query = "INSERT INTO " + tableName.toUpperCase() + " ("
+					+ insertingFields.substring(0, insertingFields.length() - 1).toUpperCase() + ") VALUES ("
+					+ insertingFieldsValues.substring(0, insertingFieldsValues.length() - 1) + ")";
+			if (log.isDebugEnabled()) {
+				log.debug(query);
+			}
+			executeInsert(query);
 		}
-		
 		return "";
 	}
 
-	public static void main(String[] args) throws Exception {
-		Question question = BusinessObject.create1(Question.class);
-
-		question.setQuestion("dd");
-		question.setQuestionId("qid");
-		question.setUploadDate("hjg");
-		frameQuery(question);
-	}
-
-	class Query {
-
-		private String tableName;
-
-		private List<ColumnInfo> columnInfo;
-
-		public String getTableName() {
-			return tableName;
-		}
-
-		public void setTableName(String tableName) {
-			this.tableName = tableName;
-		}
-
-		public List<ColumnInfo> getColumnInfo() {
-			return columnInfo;
-		}
-
-		public void setColumnInfo(List<ColumnInfo> columnInfo) {
-			this.columnInfo = columnInfo;
-		}
-
-		public void addColumnInfo(ColumnInfo columnInfo) {
-			if (this.columnInfo == null) {
-				this.columnInfo = new ArrayList<ColumnInfo>();
-			}
-			this.columnInfo.add(columnInfo);
-
-		}
-
-		public String toQuery(Operation operation) {
-			String query = "";
-			switch (operation) {
-			case SELECT:
-				query = "SELECT * from " + this.getTableName();
-				break;
-			case INSERT:
-				List<ColumnInfo> columnInfos = this.getColumnInfo();
-				StringBuffer column = new StringBuffer();
-				StringBuffer value = new StringBuffer();
-				if (columnInfos != null) {
-					for (int i = 0; i < columnInfos.size(); i++) {
-						ColumnInfo columnInfo = columnInfos.get(i);
-						if (columnInfo != null) {
-							column.append(columnInfo.getName());
-							if (columnInfo.getDataType() instanceof String) {
-								value.append("'" + columnInfo.getValue() + "'");
-							} else if (columnInfo.getDataType() instanceof Integer) {
-								value.append(columnInfo.getValue());
+	private static String updateQuery(Object question) {
+		Class<?> class1 = question.getClass();
+		Field[] fields = class1.getFields();
+		String update = "";
+		String tableName = "";
+		Class<?> c = question.getClass().getInterfaces()[0];
+		Table table = c.getAnnotation(Table.class);
+		tableName = table.tableName();
+		String primaryKeyField = "";
+		String primaryKeyValue = "";
+		if (fields != null) {
+			for (int i = 0; i < fields.length; i++) {
+				Field field = fields[i];
+				try {
+					if (field != null && field.getName() != null && field.get(question) != null) {
+						String fieldValue = (String) field.get(question);
+						if (!fieldValue.toLowerCase().equals(field.getName().toLowerCase())) {
+							Column column = field.getAnnotation(Column.class);
+							if (column.isPrimaryKey()) {
+								primaryKeyField = column.columnName();
+								primaryKeyValue = fieldValue;
+							} else {
+								switch (column.columnType()) {
+								case BIGINT:
+									update = update + column.columnName() + "=" + fieldValue + ",";
+									break;
+								case INT:
+									update = update + column.columnName() + "=" + fieldValue + ",";
+									break;
+								case STRING:
+									update = update + column.columnName() + "='" + fieldValue + "',";
+									break;
+								}
 							}
 						}
-						if (i != columnInfos.size()) {
-							value.append(",");
-						}
 					}
+				} catch (IllegalArgumentException e) {
+					log.error(e.getLocalizedMessage());
+				} catch (IllegalAccessException e) {
+					log.error(e.getLocalizedMessage());
 				}
-				query = "insert into " + this.getTableName() + "(" + column.toString() + ") values(" + value.toString()
-				+ ")";
-				break;
-			case UPDATE:
-				break;
+			}
+			String query = "UPDATE TABLE " + tableName.toUpperCase() + " SET "
+					+ update.substring(0, update.length() - 1) + " WHERE " + primaryKeyField + " = " + primaryKeyValue;
+			if (log.isDebugEnabled()) {
+				log.debug(query);
 			}
 
-			return query;
+			if (primaryKeyValue != null && !primaryKeyValue.equals("")) {
+				executeUpdate(query);
+			} else {
+				insertQuery(question);
+			}
+
 		}
+		return "";
 	}
 
-	enum Operation {
-		INSERT, UPDATE, SELECT
+	private static String deleteQuery(Object question) {
+		Class<?> class1 = question.getClass();
+		Field[] fields = class1.getFields();
+		String tableName = "";
+		Class<?> c = question.getClass().getInterfaces()[0];
+		Table table = c.getAnnotation(Table.class);
+		tableName = table.tableName();
+		String primaryKeyField = "";
+		String primaryKeyValue = "";
+		if (fields != null) {
+			for (int i = 0; i < fields.length; i++) {
+				Field field = fields[i];
+				try {
+					if (field != null && field.getName() != null && field.get(question) != null) {
+						String fieldValue = (String) field.get(question);
+						if (!fieldValue.toLowerCase().equals(field.getName().toLowerCase())) {
+							Column column = field.getAnnotation(Column.class);
+							if (column.isPrimaryKey()) {
+								primaryKeyField = column.columnName();
+								primaryKeyValue = fieldValue;
+								break;
+							}
+						}
+					}
+				} catch (IllegalArgumentException e) {
+					log.error(e.getLocalizedMessage());
+				} catch (IllegalAccessException e) {
+					log.error(e.getLocalizedMessage());
+				}
+			}
+			String query = "DELET FROM " + tableName.toUpperCase() + " WHERE " + primaryKeyField + " = "
+					+ primaryKeyValue;
+			if (log.isDebugEnabled()) {
+				log.debug(query);
+			}
+			executeDelete(query);
+		}
+		return "";
 	}
 
-	class ColumnInfo {
-		private String name;
-		private String value;
-		private Object dataType;
-
-		public ColumnInfo(String name, String value, Object dataType) {
-
-			this.name = name;
-			this.value = value;
-			this.dataType = dataType;
+	private static <T> List<Map<String, T>> fetchQuery(Class<T> class1) {
+		if(con==null)
+		{
+			con = CreateConnection.getConnection();
+		}
+		//Class<?> class1 = object.getClass();
+		Field[] fields = class1.getFields();
+		String insertingFields = "", insertingFieldsValues = "", tableName = "";
+		Table table = class1.getAnnotation(Table.class);
+		if(table == null)
+		{
+			try {
+				throw new Exception(""+class1+" Doest have table annoutation");
+			} catch (Exception e) {
+				log.error(e.getLocalizedMessage());
+				return null;
+			}
 		}
 
-		public String getName() {
-			return name;
-		}
+		tableName = table.tableName();
+		if (fields != null) {
+			for (int i = 0; i < fields.length; i++) {
+				Field field = fields[i];
+				try {
+					if (field != null && field.getName() != null && field.get(class1) != null) {
+						String fieldValue = (String) field.get(class1);
+						if (!fieldValue.toLowerCase().equals(field.getName().toLowerCase())) {
+							Column column = field.getAnnotation(Column.class);
+							insertingFields = insertingFields + column.columnName() + ",";
 
-		public void setName(String name) {
-			this.name = name;
+							switch (column.columnType()) {
+							case BIGINT:
+								insertingFieldsValues = insertingFieldsValues + fieldValue + ",";
+								break;
+							case INT:
+								insertingFieldsValues = insertingFieldsValues + fieldValue + ",";
+								break;
+							case STRING:
+								insertingFieldsValues = insertingFieldsValues + "'" + fieldValue + "',";
+								break;
+							case ENUM:
+								insertingFieldsValues = insertingFieldsValues + "'" + fieldValue + "',";
+								break;
+							case LIST:
+								insertingFieldsValues = insertingFieldsValues + "'" + fieldValue + "',";
+								break;
+							default:
+								break;
+							}
+						}
+					}
+				} catch (IllegalArgumentException e) {
+					log.error(e.getLocalizedMessage());
+				} catch (IllegalAccessException e) {
+					log.error(e.getLocalizedMessage());
+				}
+			}
+			System.out.println(insertingFields);
+			System.out.println(insertingFieldsValues);
+			String query = "SELECT * FROM " + tableName.toUpperCase();
+			if (log.isDebugEnabled()) {
+				log.debug(query);
+			}
+			return executeFetch(query);
 		}
+		return (new  ArrayList<Map<String, T>>());
+	}
 
-		public String getValue() {
-			return value;
-		}
 
-		public void setValue(String value) {
-			this.value = value;
+	private static int executeInsert(String query) {
+		int result = 0;
+		try {
+			con.update(query);
+		} catch (Exception exception) {
+			log.error(exception);
 		}
+		return result;
+	}
 
-		public Object getDataType() {
-			return dataType;
+	private static int executeUpdate(String query) {
+		int result = 0;
+		try {
+			con.update(query);
+		} catch (Exception exception) {
+			log.error(exception);
 		}
+		return result;
+	}
 
-		public void setDataType(Object dataType) {
-			this.dataType = dataType;
+	private static int executeDelete(String query) {
+		int result = 0;
+		try {
+			con.update(query);
+		} catch (Exception exception) {
+			log.error(exception);
 		}
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	private static <T> List<T> executeFetch(String query ) {
+		try {
+			return (List<T>) con.queryForList(query);
+		} catch (Exception exception) {
+			log.error(exception);
+		}
+		return (new ArrayList<T>());
+	}
+
+
+	public static void main(String[] args) throws Exception {
+		fetchQuery(Question.class);
 
 	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> List<T> findAll(Class<T> class1) {
+		return (List<T>) fetchQuery(class1);
+	}
+
 }

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+
+
+<!-- CSS -->
+<!-- Bootstrap Libraries -->
+<link rel="stylesheet" type="text/css"
+	href="css/bootstrap/bootstrap.min.css">
+<!-- Custom Libraries -->
+<link rel="stylesheet" type="text/css" href="css/login.css">
+
+
+<!--  JavaScript -->
+<!-- jQuery Libraries -->
+<script type="text/javascript" src="js/jquery/jquery-3.3.1.min.js"></script>
+<!-- Bootstrap Libraries -->
+<script type="text/javascript" src="js/bootstrap/bootstrap.min.js"></script>
+<!-- Custom Libraries -->
+<script type="text/javascript" src="js/login.js"></script>
+
+
+</head>
+<body>
+
+	<div class="container">
+		<div id="loginContent" class="modal">
+			<form class="modal-content animate">
+				<div class="imgcontainer">
+					<span
+						onclick="document.getElementById('id01').style.display='none'"
+						class="close" title="Close Modal">&times;</span>
+				</div>
+				<div class="container">
+					<ul class="nav nav-tabs">
+						<li class="active"><a href="#">Login</a></li>
+						<li><a href="#">Register</a></li>
+					</ul>
+				</div>
+				<div class="container">
+					<label for="uname"><b>Username</b></label> <input type="text"
+						placeholder="Enter Username" name="uname" required> <label
+						for="psw"><b>Password</b></label> <input type="password"
+						placeholder="Enter Password" name="psw" required> <label class="register" style="display:none"
+						for="uname"><b>Retype password</b></label> <input class="register" style="display:none" type="text"
+						placeholder="Retype Password" name="uname" required> <label class="register" style="display:none"
+						for="psw"><b>Email Id</b></label> <input class="register" type="password"
+						placeholder="Email id" style="display:none" name="psw" required>
+					<div style="width:100%;text-align: center;">
+						<button type="button" style="display:none">Register</button>
+						<button type="button">Login</button>
+						<button type="button">clear</button>
+					</div>
+					<br style="clear:both"/> 
+					<label> <input type="checkbox" checked="checked"
+						name="remember"> Remember me
+					</label>
+				</div>
+
+				<div class="container" style="background-color: #f1f1f1">
+					<button type="button"
+						onclick="document.getElementById('id01').style.display='none'"
+						class="cancelbtn">Cancel</button>
+					<span class="psw">Forgot <a href="#">password?</a></span>
+				</div>
+			</form>
+		</div>
+		<div id="registerContent"></div>
+	</div>
+
+</body>
+</html>

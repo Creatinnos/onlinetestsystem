@@ -9,4 +9,45 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  
+<listener>
+    <listener-class>
+        com.creatinnos.onlinetestsystem.listener.MyServletContextListener
+    </listener-class>
+</listener>
+<listener>
+   	<listener-class>
+        com.creatinnos.onlinetestsystem.listener.MyServletContextListener2
+    </listener-class>
+</listener>
+<listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+</listener>
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:applicationContext.xml</param-value>
+	</context-param>
+
+
+	<servlet>
+		<servlet-name>jersey-serlvet</servlet-name>
+		<servlet-class>
+			org.glassfish.jersey.servlet.ServletContainer
+		</servlet-class>
+		<init-param>
+			<param-name>
+                        jersey.config.server.provider.packages
+                        </param-name>
+			<param-value>com.creatinnos.onlinetestsystem.rest</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>jersey-serlvet</servlet-name>
+		<url-pattern>/rest/*</url-pattern>
+	</servlet-mapping>
+
+
 </web-app>

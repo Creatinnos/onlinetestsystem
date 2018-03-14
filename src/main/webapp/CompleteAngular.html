@@ -3,27 +3,45 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
-<script src="js/angular.min.js"></script>
+<script src="js/angular.js"></script>
+<script src="js/angular-route.js"></script>
+<script src="js/sample.js"></script>
 </head>
 <body>
 
-<div ng-app="myClick" ng-controller="myClickCtrl">
-    <h1 ng-click="changeName()">{{firstname}}</h1>
+	<div ng-app="myClick" ng-controller="myClickCtrl">
+		<h1 ng-click="changeName()">{{firstname}}</h1>
+	</div>
+
+	<script>
+		var app2 = angular.module('myClick', []);
+		app2.controller('myClickCtrl', function($scope) {
+			$scope.firstname = "John";
+			$scope.changeName = function() {
+				$scope.firstname = "Nelly";
+			}
+		});
+	</script>
+
+	<p>Click on the header to run the "changeName" function.</p>
+
+	<p>This example demonstrates how to use the controller to change
+		model data.</p>
+
+<div ng-app="app">
+    <div ng-controller="Controller1">
+      <ul>
+          controller 1
+     </ul>
+     </div>
+        <div ng-controller="Controller2">
+      <ul>
+            <li >
+                controllert 2 section  {{lists}}
+            </li>
+     </ul>
+     </div>
 </div>
-
-<script>
-var app = angular.module('myClick', []);
-app.controller('myClickCtrl', function($scope) {
-    $scope.firstname = "John";
-    $scope.changeName = function() {
-        $scope.firstname = "Nelly";
-    }
-});
-</script>
-
-<p>Click on the header to run the "changeName" function.</p>
-
-<p>This example demonstrates how to use the controller to change model data.</p>
 
 </body>
 </html>
