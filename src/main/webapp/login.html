@@ -40,22 +40,26 @@
 					</ul>
 				</div>
 				<div class="container">
-					<label for="uname"><b>Username</b></label> <input type="text"
-						placeholder="Enter Username" name="uname" required> <label
-						for="psw"><b>Password</b></label> <input type="password"
-						placeholder="Enter Password" name="psw" required> <label class="register" style="display:none"
-						for="uname"><b>Retype password</b></label> <input class="register" style="display:none" type="text"
-						placeholder="Retype Password" name="uname" required> <label class="register" style="display:none"
-						for="psw"><b>Email Id</b></label> <input class="register" type="password"
-						placeholder="Email id" style="display:none" name="psw" required>
-					<div style="width:100%;text-align: center;">
-						<button type="button" style="display:none">Register</button>
-						<button type="button">Login</button>
+					<label for="uname"><b>Username</b></label>
+					<input id="usernametxt" type="text" placeholder="Enter Username" name="uname" required>
+					<label for="psw"><b>Password</b></label> 
+					<input id="passwordtxt" type="password" placeholder="Enter Password" name="psw" required> 
+					<label class="register" style="display: none" for="uname"><b>Retype password</b></label>
+					<input class="register" style="display: none" type="text" placeholder="Retype Password" name="uname" required>
+					<label class="register" style="display: none" for="companyName"><b>Institute/Company Name</b></label> 
+					<input class="register" type="text" placeholder="Institute/Company Name" style="display: none" name="companyName" required>
+					<label class="register" style="display: none" for="emailID"><b>Email Id</b></label> 
+					<input class="register" type="text" placeholder="Email id" style="display: none" name="emailID" required>
+					<label class="register" style="display: none" for="phoneNumber"><b>Phone Number</b></label> 
+					<input class="register" type="text" placeholder="Phone Number" style="display: none" name="phoneNumber" required>
+					<div style="width: 100%; text-align: center;">
+						<button type="button" style="display: none">Register</button>
+						<button id="loginbtn" type="button">Login</button>
+						<button id="writeExam" type="button">Write Exam</button>
 						<button type="button">clear</button>
 					</div>
-					<br style="clear:both"/> 
-					<label> <input type="checkbox" checked="checked"
-						name="remember"> Remember me
+					<br style="clear: both" /> <label> <input type="checkbox"
+						checked="checked" name="remember"> Remember me
 					</label>
 				</div>
 

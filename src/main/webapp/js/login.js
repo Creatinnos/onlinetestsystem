@@ -12,4 +12,22 @@ $(document).ready(function() {
 			$(".register").css({display:'none'});
 		}
 	});
+	$("#loginbtn").click(function(){
+		var username=$("#usernametxt").val();
+		var password=$("#passwordtxt").val();
+		if(username != undefined && password != undefined && username == 'admin' && password == 'admin')
+			{
+			window.location.replace("http://localhost:11958/onlinetestsystem/examinar.html");
+			}
+		else
+			{
+			alert("Invalid Login");
+			}
+	});
+	$("#writeExam").click(function(){
+			window.location.replace("http://localhost:11958/onlinetestsystem/exampage.html");
+		
+	});
+	
+	
 });

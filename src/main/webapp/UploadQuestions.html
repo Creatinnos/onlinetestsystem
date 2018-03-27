@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<script type="text/javascript" src="js/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="js/uploadquestion.js"></script>
+<link rel="stylesheet" type="text/css" href="css/uploadquestion.css">
+</head>
+<body>
+	<div>
+		<div id="header"
+			style="text-align: center; border-bottom: 2px; border-bottom-style: double; height: 15%; width: 99%;">
+			<h1>
+				<Span id="headerTtile">Creatinnos</Span>
+			</h1>
+		</div>
+		<div id="container" style="padding: 1%; height: 96%">
+			<div id="containerLeft"
+				style="float: left; text-align: center; border-right: 2px; border-right-style: double; min-height: 100%; height: 100%; width: 20%;">
+					<br>
+				</div>
+			<div id="containerMiddle"
+				style="float: left; text-align: center; height: 550px; width: 58%;overflow:auto">
+				<button id="uploadQuestions">Upload Questions</button>
+				<button id="fetchQuestions">Fetch Questions</button>
+				<div id="containerMiddleContent"></div>
+				</div>
+			<div id="containerRight"
+				style="float: left; text-align: center; border-left: 2px; border-left-style: double; height: 100%; width: 20%;">
+				<div id="count"  style="padding:20px;">
+					<span class="decreaseCount" id="decreaseCount">-</span>
+					<span class="countValueSpan" id="countValueSpan"><input type="text" id="countValue"/></span>
+					<span class="increaseCount" id="increaseCount">+</span>				
+				</div>
+				<div class="leftpanTemplate" id="templateRadio" style="width: 100%;">
+					<a href="#"><span></span></a>
+					<div id="tableDiv">
+						<table style="margin: 0 auto;">
+							<tr>
+								<td colspan="2"><textarea cols="20" rows="3"
+										readonly="true"></textarea></td>
+							</tr>
+							<tr>
+								<td><input type="radio" /></td>
+								<td><input type="radio" /></td>
+							</tr>
+							<tr>
+								<td><input type="radio" /></td>
+								<td><input type="radio" /></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<div class="leftpanTemplate" id="templateCheck" style="width: 100%;">
+					<a href="#"><span></span></a>
+					<div id="tableDiv">
+						<table style="margin: 0 auto;">
+							<tr>
+								<td colspan="2"><textarea cols="20" rows="3"
+										readonly="true"></textarea></td>
+							</tr>
+							<tr>
+								<td><input type="checkbox" /></td>
+								<td><input type="checkbox" /></td>
+							</tr>
+							<tr>
+								<td><input type="checkbox" /></td>
+								<td><input type="checkbox" /></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				
+			</div>
+
+		</div>
+		<div id="footer"
+			style="position: fixed; height: 50px; background-color: black; color: white; text-align: center; bottom: 0px; left: 0px; right: 0px; margin-bottom: 0px;">
+			&copy; 2018 Creatinnos | Designed by Creatinnos</div>
+	</div>
+	<div id="hiddenCheckboxDiv" style="display: none;">
+		<div id="tableDiv" style="padding:2%">
+			<table id="radio" style="width: 100%;margin: 0 auto;">
+				<tr>
+					<td colspan="2" id="question">
+					<textarea tabindex="1" style="width: 80%;" cols="20" rows="3" placeholder="Enter the Question">jkhjk</textarea>
+					</td>
+				</tr>
+				<tr>
+					<td id="choice"><span id="value"><input  type="radio"/></span><span
+						id="description"><input style="width: 58%;" type="text" value="sdf" placeholder="Choice 1"/></span></td>
+					<td id="choice"><span id="value"><input type="radio" /></span><span
+						id="description"><input style="width: 58%;" type="text" value="sdf" placeholder="Choice 2"/></span></td>
+				</tr>
+				<tr>
+					<td id="choice"><span id="value"><input type="radio" /></span><span
+						id="description"><input style="width: 58%;" type="text" value="sdf" placeholder="Choice 3"/></span></td>
+					<td id="choice"><span id="value"><input type="radio"/></span><span
+						id="description"><input style="width: 58%;" type="text" value="sdf" placeholder="Choice 4"/></span></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div id="hiddenRadioDiv" style="display: none;">
+		<div id="tableDiv" style="padding:2%">
+			<table id="checkbox" style="width: 100%;margin: 0 auto;">
+				<tr>
+					<td colspan="2" id="question"><textarea style="width: 80%;" cols="20" rows="3" placeholder="Enter the Question"></textarea></td>
+				</tr>
+				<tr>
+					<td id="choice"><span id="value"><input  type="checkbox" /></span><span
+						id="description"><input style="width: 58%;" type="text" placeholder="Choice 1"/></span></td>
+					<td id="choice"><span id="value"><input type="checkbox" /></span><span
+						id="description"><input style="width: 58%;" type="text" placeholder="Choice 2"/></span></td>
+				</tr>
+				<tr>
+					<td id="choice"><span id="value"><input type="checkbox" /></span><span
+						id="description"><input style="width: 58%;" type="text" placeholder="Choice 3"/></span></td>
+					<td id="choice"><span id="value"><input type="checkbox" /></span><span
+						id="description"><input style="width: 58%;" type="text" placeholder="Choice 4"/></span></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</body>
+</html>
