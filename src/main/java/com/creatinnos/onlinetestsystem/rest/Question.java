@@ -11,6 +11,7 @@ public class Question {
 	private String type;
 	private String question;
 	private String answer;
+	private ArrayList<String> correctChoice;
 	private String choice1;
 	private String choice2;
 	private String choice3;
@@ -148,10 +149,18 @@ public class Question {
 		this.choice10 = choice10;
 	}
 
+	public ArrayList<String> getCorrectChoice() {
+		return correctChoice;
+	}
+
+	public void setCorrectChoice(ArrayList<String> correctChoice) {
+		this.correctChoice = correctChoice;
+	}
+
 	@Override
 	public String toString() {
 		return "Question2 [type=" + type + ", question=" + question + ", choice1=" + choice1 + ", choice2=" + choice2
-				+ ", choice3=" + choice3 + ", choice4=" + choice4 + "]";
+				+ ", choice3=" + choice3 + ", choice4=" + choice4 + ", correctChoice="+correctChoice+"]";
 	}
 
 	public com.creatinnos.onlinetestsystem.bo.Question getBO()
@@ -159,7 +168,7 @@ public class Question {
 		com.creatinnos.onlinetestsystem.bo.Question question=BusinessObject.create(com.creatinnos.onlinetestsystem.bo.Question.class);
 
 		question.setQuestion(this.question);
-		question.setAnswer(answer);
+		question.setAnswer(correctChoice.toString());
 		if(type!=null)
 		{
 			switch(type)

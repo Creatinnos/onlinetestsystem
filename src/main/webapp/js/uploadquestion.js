@@ -31,22 +31,56 @@ $(document).ready(function(){
 		completeArr=[];
 		var i=1;
 		$('#containerMiddleContent').children().each(function () {
+			var tableDiv=$(this).children();
+			if($(tableDiv).prop('tagName') =='FIELDSET')
+			{
+				tableDiv=$(tableDiv).children();
+			}
 			var temp={};
-			temp["type"]=$(this).children().attr("id");
-			temp["question"]=$(this).children().children().children().children("#question").children('textarea').val();
-			$(this).children().children().children().children("td[id^='choice']").each(function(){
+			var correctChoice=[];
+			var question=$(tableDiv).children().children().children("#question").children('textarea').val();
+			if(question!=undefined  && question!=""  )
+			{
+				temp["type"]=$(tableDiv).attr("id");
 
-				temp["choice"+i]="\""+$(this).children("#description").children("input").val()+"\"";
-				i++;
-			})
-			temp["answer"]="answer";
-			i=1;
-			completeArr.push(temp);
+				temp["question"]=question;
+				$(tableDiv).children().children().children("td[id^='choice']").each(function(){
+
+					var isChecked = $(this).children("#value").children("input").prop('checked');
+
+					temp["choice"+i]="\""+$(this).children("#description").children("input").val()+"\"";
+					if(isChecked)
+					{
+						correctChoice.push("choice"+i);
+					}
+					i++;
+				});
+				if(correctChoice.length <=0)
+				{
+					alert("No Answer selected for Question No");
+					return false;
+				}
+				else
+				{
+					temp["correctChoice"]=correctChoice;
+					i=1;
+					completeArr.push(temp);
+				}
+			}
 		});
-
-		var x=JSON.stringify(completeArr);
-		console.log(x);
-		searchViaAjax(x);
+		
+		if(completeArr.length <=0)
+		{
+			console.log("Nothing to persist");
+			return false;
+		}
+		else
+		{
+			var x=JSON.stringify(completeArr);
+			console.log(x);
+			searchViaAjax(x);
+		}
+		
 	});
 
 
@@ -65,14 +99,14 @@ $(document).ready(function(){
 		else
 			$("#countValue").val(0);
 	});
-	
+
 	$("#fetchQuestions").click(function(){
 
 		// similar behavior as an HTTP redirect
 		window.location.replace("http://localhost:11958/onlinetestsystem/DisplayQuestions.html");
-		
+
 	});
-	
+
 });
 
 function searchViaAjax(search1) {
@@ -111,8 +145,8 @@ function findQuestions() {
 		success: function(data){
 			$.each(data, function( index, value ) {
 				console.log(value["QUESTION"]);
-				  alert( value[index]);
-				});
+				alert( value[index]);
+			});
 		},
 		error : function(e) {
 			alert("Fetch Error");
@@ -123,7 +157,7 @@ function findQuestions() {
 			console.log("DONE");
 
 		}
-	
+
 	});
 }
 

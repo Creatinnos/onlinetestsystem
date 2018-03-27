@@ -4,4 +4,4 @@
 create database onlinetestsystem
 
 //Create Question Table
-create table question(ID bigint primary key auto_increment,QUESTION varchar(255),CHOICETYPE varchar(255),CHOICE varchar(255),UPLOADDATE varchar(255))
+create table question(ID bigint primary key auto_increment,QUESTION varchar(255),CHOICETYPE varchar(255),CHOICE varchar(255),ANSWER varchar(255),UPLOADDATE varchar(255))
