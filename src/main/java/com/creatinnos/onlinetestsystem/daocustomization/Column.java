@@ -15,6 +15,5 @@ public @interface Column {
 	ColumnType columnType();
 	String columnValue() default "";
 	Class<?> enumValue() default Enum.class;
-
 	int columnLength() default 0;
 }

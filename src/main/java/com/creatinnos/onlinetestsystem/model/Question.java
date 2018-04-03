@@ -1,10 +1,9 @@
-package com.creatinnos.onlinetestsystem.rest;
+package com.creatinnos.onlinetestsystem.model;
 
 import java.util.ArrayList;
 import java.util.Date;
 
 import com.creatinnos.onlinetestsystem.daocustomization.BusinessObject;
-import com.creatinnos.onlinetestsystem.model.ChoiceType;
 
 public class Question {
 
@@ -204,7 +203,7 @@ public class Question {
 		if(choice10!=null && !choice10.equals(""))
 			arr.add(choice10);
 
-		question.setChoices(arr);
+		question.setChoice(arr);
 		question.setUploadDate(""+(new Date()));
 		return question;
 	}

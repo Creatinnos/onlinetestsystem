@@ -17,8 +17,8 @@
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url" value="jdbc:mysql://localhost:3306/onlinetestsystem" />
-		<property name="username" value="admin" />
-		<property name="password" value="admin" />
+		<property name="username" value="babu" />
+		<property name="password" value="babu" />
 	</bean>
 
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">

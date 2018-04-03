@@ -14,7 +14,7 @@ import javax.ws.rs.core.UriBuilder;
 
 import org.glassfish.jersey.client.ClientConfig;
 
-import com.creatinnos.onlinetestsystem.rest.Question;
+import com.creatinnos.onlinetestsystem.model.Question;
 
 public class RestServiceClient {
 	public static void main(String[] args) {

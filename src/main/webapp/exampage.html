@@ -6,6 +6,7 @@
 
 <!-- CSS -->
 <!-- Bootstrap Libraries -->
+
 <link rel="stylesheet" type="text/css"
 	href="css/bootstrap/bootstrap.min.css">
 <!-- Custom Libraries -->
@@ -16,30 +17,70 @@
 <!-- jQuery Libraries -->
 <script type="text/javascript" src="js/jquery/jquery-3.3.1.min.js"></script>
 <!-- Bootstrap Libraries -->
+
 <script type="text/javascript" src="js/bootstrap/bootstrap.min.js"></script>
+
 <!-- Custom Libraries -->
 <script type="text/javascript" src="js/exampage.js"></script>
 </head>
 <body>
+<!-- Finish Test Modal -->
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog"   aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Warning!!!</h4>
+			</div>
+			<div class="modal-body">
+				<p> Some Questions are not answered still you want to submit the Test</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-info btn-lg" id="submitTest">Yes</button>
+				<button type="button" class="btn btn-info btn-lg" data-dismiss="modal" id="modalClose">No</button>
+			</div>
+		</div>
+
+	</div>
+</div>
 	<div>
 		<div id="header"
 			style="text-align: center; border-bottom: 2px; border-bottom-style: double; height: 15%; width: 99%;">
 			<h1>
-				<Span id="headerTtile">Creatinnos</Span>
+				<Span id="headerTtile">Creatinnos</Span> <span
+					style="float: right; margin-right: 1%">
+					<button type="button" class="btn btn-info btn-lg"
+					id="finishTest">Finish Test</button>
+					
+				</span>
+
 			</h1>
+
+
 		</div>
 		<div id="container" style="padding: 1%; height: 96%">
 			<div id="containerLeft"
-				style="float: left; text-align: center; border-right: 2px; border-right-style: double; min-height: 100%; height: 100%; width: 20%;">
+				style="overflow: hidden; float: left; border-right: 2px; border-right-style: double; min-height: 100%; width: 20%;">
+				<div id="section" style="height: 600px; overflow: auto">
+					<div id="sectionHeader"
+						style="width: inherit; text-align: center; margin: 10px">Header</div>
+					<div id="sectionContent" style=""></div>
+				</div>
 				<br />
 			</div>
 			<div id="containerMiddle"
-				style="float: left; text-align: center; height: 550px; width: 58%; overflow: auto">
-				<div id="containerMiddleContent"></div>
+				style="float: left; text-align: center; width: 58%; overflow: scroll; height: 600px">
+				<div id="containerMiddleContent" style="overflow: auto"></div>
 			</div>
 			<div id="containerRight"
-				style="float: left; text-align: center; border-left: 2px; border-left-style: double; height: 100%; width: 20%;">
-				<br />
+				style="float: left; text-align: center; height: 100%; width: 20%;">
+				<div>
+					<div>Notes</div>
+					<div
+						style="height: 500px; overflow: auto; border-style: double; border-width: 2px"
+						contenteditable="true"></div>
+				</div>
 			</div>
 
 		</div>
@@ -48,5 +89,7 @@
 			&copy; 2018 Creatinnos | Designed by Creatinnos</div>
 	</div>
 
+
 </body>
+
 </html>

@@ -1,5 +1,7 @@
 package com.creatinnos.onlinetestsystem.rest;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -12,10 +14,11 @@ import javax.ws.rs.core.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.creatinnos.onlinetestsystem.daocustomization.BusinessObject;
+import com.creatinnos.onlinetestsystem.model.Question;
 import com.creatinnos.onlinetestsystem.utils.Utilities;
 
 @Path("/question")
-public class RestService {
+public class UploadService {
 
 	@POST
 	@Path("/save")
@@ -25,7 +28,7 @@ public class RestService {
 		System.out.println("consumeJSONList Client : " + question.toString());;
 		BusinessObject.save(question);
 	}
-	
+
 	@POST
 	@Path("/saveList")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -44,9 +47,11 @@ public class RestService {
 	@GET
 	@Path("/fetchQuestion")
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<com.creatinnos.onlinetestsystem.bo.Question> produceQuestions() {
-			return BusinessObject.findAll(com.creatinnos.onlinetestsystem.bo.Question.class);
+	@Produces(MediaType.TEXT_PLAIN)
+	public String produceQuestions() {
+		List<String> questions=BusinessObject.findAll(com.creatinnos.onlinetestsystem.bo.Question.class);
+		System.out.println(questions.toString());
+		return questions.toString();
 	}
-	
+
 }

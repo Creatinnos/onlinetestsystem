@@ -8,6 +8,7 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,17 +16,15 @@ import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.creatinnos.onlinetestsystem.bo.Question;
-import com.creatinnos.onlinetestsystem.model.ChoiceType;
+import com.creatinnos.onlinetestsystem.utils.Utilities;
 
-public class BusinessObject implements InvocationHandler {
+public class BusinessObject implements InvocationHandler,Cloneable {
 	/* Get actual class name to be printed on */
 	static Logger log = Logger.getLogger(BusinessObject.class.getName());
 
-	private Object intefaceClass;
 	private static JdbcTemplate con = null;
 
 	private BusinessObject(Class<?> intefaceClass) {
-		this.intefaceClass = intefaceClass;
 		con = CreateConnection.getConnection();
 	}
 
@@ -37,7 +36,7 @@ public class BusinessObject implements InvocationHandler {
 			String name = methodName.substring(methodName.indexOf("get") + 3);
 			Field nameField = null;
 			try {
-				nameField = result.getClass().getField(name.toUpperCase());
+				nameField = result.getClass().getInterfaces()[0].getField(name.toUpperCase());
 				Column column = nameField.getAnnotation(Column.class);
 				switch (column.columnType()) {
 				case BIGINT:
@@ -55,8 +54,6 @@ public class BusinessObject implements InvocationHandler {
 				case ENUM:
 					if(nameField.get(this)!=null  && !nameField.get(this).equals("choiceType"))
 					{
-						System.out.println(column.enumValue().getName());
-						System.out.println(nameField.get(this)+"ss");
 						return Enum.valueOf((Class<? extends Enum>)Class.forName(column.enumValue().getName()),(String) nameField.get(this));
 					}
 				}
@@ -82,23 +79,26 @@ public class BusinessObject implements InvocationHandler {
 				Column column = nameField.getAnnotation(Column.class);
 				switch (column.columnType()) {
 				case BIGINT:
-					nameField.set(intefaceClass, args[0]);
+					nameField.set(result, args[0]);
 					break;
 				case INT:
-					nameField.set(intefaceClass, args[0]);
+					nameField.set(result, args[0]);
 					break;
 				case STRING:
-					nameField.set(intefaceClass, args[0]);
+					nameField.set(result, args[0]);
 					break;
 				case LIST:
-					nameField.set(intefaceClass, args[0].toString());
+					nameField.set(result, args[0].toString());
 					break;
 				case ENUM:
 					Enum st=Enum.valueOf((Class<? extends Enum>)Class.forName(column.enumValue().getName()),args[0].toString());
-					nameField.set(intefaceClass, st.name());
+					nameField.set(result, st.name());
 					//nameField.set(intefaceClass,ChoiceType.CHECKBOX.toString());
 					break;
 				}
+				modifierField = nameField.getClass().getDeclaredField("modifiers");
+				modifierField.setAccessible(true);
+				modifierField.setInt(nameField, Modifier.SYNCHRONIZED);
 				return nameField;
 			} catch (NoSuchFieldException e) {
 				log.error(e.getLocalizedMessage());
@@ -107,12 +107,12 @@ public class BusinessObject implements InvocationHandler {
 			} catch (Exception e) {
 				log.error(e.getLocalizedMessage());
 			}
-			return intefaceClass;
+			return result;
 		} else if (methodName.startsWith("is")) {
 			String name = methodName.substring(methodName.indexOf("is") + 2);
 			return name;
 		}
-		return intefaceClass;
+		return result;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -120,6 +120,12 @@ public class BusinessObject implements InvocationHandler {
 		BusinessObject handler = new BusinessObject(boInterfaceClass.getClass());
 		return (T) Proxy.newProxyInstance(boInterfaceClass.getClassLoader(), new Class[] { boInterfaceClass }, handler);
 	}
+
+	@SuppressWarnings("unchecked")
+	public <T> T createClone(Class<T> boInterfaceClass) {
+		return (T) Proxy.newProxyInstance(boInterfaceClass.getClassLoader(), new Class[] { boInterfaceClass }, new BusinessObject(boInterfaceClass));
+	}
+
 
 	public static void save(Object object) {
 		insertQuery(object);
@@ -284,7 +290,7 @@ public class BusinessObject implements InvocationHandler {
 		return "";
 	}
 
-	private static <T> List<Map<String, T>> fetchQuery(Class<T> class1) {
+	private static <T> List<String> fetchQuery(Class<T> class1) {
 		if(con==null)
 		{
 			con = CreateConnection.getConnection();
@@ -347,11 +353,56 @@ public class BusinessObject implements InvocationHandler {
 			if (log.isDebugEnabled()) {
 				log.debug(query);
 			}
-			return executeFetch(query);
+			return executeFetch(class1,query);
 		}
-		return (new  ArrayList<Map<String, T>>());
+		return null;//(new  HashMap<String, T>());
 	}
 
+	private static <T> List<String> fetchQuery(Class<T> class1,HashMap<String, Object> map) {
+		if(con==null)
+		{
+			con = CreateConnection.getConnection();
+		}
+		Table table = class1.getAnnotation(Table.class);
+		if(table == null)
+		{
+			try {
+				throw new Exception(""+class1+" Doest have table annoutation");
+			} catch (Exception e) {
+				log.error(e.getLocalizedMessage());
+				return null;
+			}
+		}
+		String query ="";
+		String where="";
+		if(map!=null && map.size()>0)
+		{
+			where = " where ";
+			for(String keys:map.keySet())
+			{	
+				where = where+keys+"='"+map.get(keys)+"' and ";	
+			}
+			where =where.trim();
+			where =where.substring(0, where.length()-3);
+		}
+
+		if(where.equals(""))
+		{
+			query = "SELECT * FROM " + table.tableName().toUpperCase();	
+		}
+		else
+		{
+			query = "SELECT * FROM " + table.tableName().toUpperCase() +" "+where ;
+		}
+
+
+
+
+		if (log.isDebugEnabled()) {
+			log.debug(query);
+		}
+		return executeFetch(class1,query);
+	}
 
 	private static int executeInsert(String query) {
 		int result = 0;
@@ -384,24 +435,121 @@ public class BusinessObject implements InvocationHandler {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static <T> List<T> executeFetch(String query ) {
+	private static <T> List<String> executeFetch(Class<T> classs,String query ) {
 		try {
-			return (List<T>) con.queryForList(query);
+			List<Map<String, Object>> maps=con.queryForList(query);
+			return op(classs,maps);
 		} catch (Exception exception) {
 			log.error(exception);
 		}
-		return (new ArrayList<T>());
+		return null;//(new HashMap<String, T>());
 	}
 
 
-	public static void main(String[] args) throws Exception {
-		fetchQuery(Question.class);
+	public static <T> String op2(T object) throws ClassNotFoundException
+	{
+		HashMap<String, String> methodNames=new HashMap<>();
+		Method methods[]=object.getClass().getInterfaces()[0].getMethods();
+		int i=0;
+		for(Method  method:methods )
+		{
+			if(method.getName().startsWith("get")){
+				methodNames.put(i+"",method.getName().substring(3));
+				i++;
+			}
+		}
+		String str="{";
+		try
+		{
+			for(i=0;i<methodNames.size();i++)
+			{			
+				Object temp=InvokeSetterGetter.invokeGetter(object, methodNames.get(i+""));
+				if(methodNames.get(i+"").equalsIgnoreCase("choice"))
+				{
+					str=str+"\""+methodNames.get(i+"")+"\" : "+temp+",";
+				}
+				else
+				{	
+					str=str+"\""+methodNames.get(i+"")+"\" : \""+temp+"\",";
+				}
+			}
+			//Utilities.JSONtoObject(object.getClass().getInterfaces()[0], str, true);
+			str=str.substring(0, str.length()-1)+"}";
+			System.out.println(str);
+		}
+		catch(Exception e)
+		{
+			//log.error(e);
+		}
 
+		return str;
+	}
+
+	public static <T> List<String>  op(Class<T> classs,List<Map<String,Object>> maps) throws ClassNotFoundException
+	{
+		List<String> list=new ArrayList<>();
+
+		Method[] methods=classs.getMethods();
+		HashMap<String, String> methodNames=new HashMap<>();
+		for(Method method:methods)
+		{
+			methodNames.put(method.getName().substring(3).toUpperCase(),method.getName().substring(3));
+		}
+
+
+		for(int i=0;i<maps.size();i++)
+		{			
+
+			@SuppressWarnings("unchecked")
+			T t=(T) Proxy.newProxyInstance(classs.getClassLoader(), new Class[] { classs }, new BusinessObject(classs));
+			for(String st:maps.get(i).keySet())
+			{
+				try
+				{
+					Field nameField = t.getClass().getField(st);
+					nameField.setAccessible(true);
+					int modifiers = nameField.getModifiers();
+					Field modifierField = nameField.getClass().getDeclaredField("modifiers");
+					modifiers = modifiers & ~Modifier.FINAL;
+					modifierField.setAccessible(true);
+					modifierField.setInt(nameField, modifiers);
+					nameField.set(t, maps.get(i).get(st)+"");
+				}
+				catch(Exception e)
+				{
+					//log.error(e);
+				}
+			}
+			;
+			list.add(op2(t));;
+		}
+		System.out.println(list);
+		return list;
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T> List<T> findAll(Class<T> class1) {
-		return (List<T>) fetchQuery(class1);
+	public static <T> List<T> find(Class<T> class1,HashMap<String, Object> map) {
+		return (List<T>) fetchQuery(class1,map);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> List <String> findAll(Class<T> class1) {
+		return  fetchQuery(class1);
+	}
+
+	public static void main(String[] args) {
+		ArrayList<Question>  list=new ArrayList<>();
+
+		Question question=(Question) Proxy.newProxyInstance(Question.class.getClassLoader(), new Class[] { Question.class }, new BusinessObject(null));
+		question.setAnswer("dfsfdfgdf");
+		//list.add(question);
+
+		Question question1=(Question) Proxy.newProxyInstance(Question.class.getClassLoader(), new Class[] { Question.class }, new BusinessObject(null));
+		question1.setAnswer("dfsdf");
+
+		System.out.println(""+(question == question1)+"");
+		System.out.println(question.getAnswer());
+		System.out.println(question1.getAnswer());
 	}
 
 }

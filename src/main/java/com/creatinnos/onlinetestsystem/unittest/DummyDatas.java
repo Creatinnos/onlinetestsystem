@@ -19,7 +19,7 @@ public class DummyDatas {
 		choices.add("choice2");
 		choices.add("choice3");
 		choices.add("choice4");
-		questions.setChoices(choices);
+		questions.setChoice(choices);
 		return questions; 
 	}
 
@@ -33,7 +33,7 @@ public class DummyDatas {
 		choices.add("choice2");
 		choices.add("choice3");
 		choices.add("choice4");
-		questions.setChoices(choices);
+		questions.setChoice(choices);
 		return questions; 
 	}
 	
@@ -47,7 +47,7 @@ public class DummyDatas {
 		choices.add("choice2");
 		choices.add("choice3");
 		choices.add("choice4");
-		questions.setChoices(choices);
+		questions.setChoice(choices);
 		return questions; 
 	}
 	

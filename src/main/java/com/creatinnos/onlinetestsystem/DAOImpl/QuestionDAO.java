@@ -20,7 +20,7 @@ public class QuestionDAO {
 		return customer;
 	}*/
 	
-	public List<Question> findAll(){
+	public List<String> findAll(){
 		
 		return BusinessObject.findAll(Question.class);
 		

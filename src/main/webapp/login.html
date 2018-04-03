@@ -41,19 +41,19 @@
 				</div>
 				<div class="container">
 					<label for="uname"><b>Username</b></label>
-					<input id="usernametxt" type="text" placeholder="Enter Username" name="uname" required>
+					<input id="usernametxt" type="text" placeholder="Enter Username" name="uname" value="admin" required>
 					<label for="psw"><b>Password</b></label> 
-					<input id="passwordtxt" type="password" placeholder="Enter Password" name="psw" required> 
+					<input id="passwordtxt" type="password" placeholder="Enter Password" name="psw" value="admin" required> 
 					<label class="register" style="display: none" for="uname"><b>Retype password</b></label>
-					<input class="register" style="display: none" type="text" placeholder="Retype Password" name="uname" required>
+					<input id="passwordRetypetxt" class="register" style="display: none" type="text" placeholder="Retype Password" name="uname" required>
 					<label class="register" style="display: none" for="companyName"><b>Institute/Company Name</b></label> 
-					<input class="register" type="text" placeholder="Institute/Company Name" style="display: none" name="companyName" required>
+					<input id="companyNametxt"  class="register" type="text" placeholder="Institute/Company Name" style="display: none" name="companyName" required>
 					<label class="register" style="display: none" for="emailID"><b>Email Id</b></label> 
-					<input class="register" type="text" placeholder="Email id" style="display: none" name="emailID" required>
+					<input id="emailtxt"  class="register" type="text" placeholder="Email id" style="display: none" name="emailID" required>
 					<label class="register" style="display: none" for="phoneNumber"><b>Phone Number</b></label> 
-					<input class="register" type="text" placeholder="Phone Number" style="display: none" name="phoneNumber" required>
+					<input id="phoneNumbertxt"  class="register" type="text" placeholder="Phone Number" style="display: none" name="phoneNumber" required>
 					<div style="width: 100%; text-align: center;">
-						<button type="button" style="display: none">Register</button>
+						<button id="registerbtn" type="button">Register</button>
 						<button id="loginbtn" type="button">Login</button>
 						<button id="writeExam" type="button">Write Exam</button>
 						<button type="button">clear</button>

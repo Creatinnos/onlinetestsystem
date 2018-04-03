@@ -8,17 +8,17 @@ import com.creatinnos.onlinetestsystem.daocustomization.Table;
 import com.creatinnos.onlinetestsystem.model.ChoiceType;
 
 @Table(tableName="question")
-public interface Question {
+public interface Question extends Cloneable {
 
-	public @Column(columnName ="questionId", columnType = ColumnType.INT,isPrimaryKey=true) String QUESTIONID = "questionId";
+	public @Column(columnName ="id", columnType = ColumnType.INT,isPrimaryKey=true) String ID = "id";
 	public @Column(columnName ="question",columnType = ColumnType.STRING) String QUESTION = "question";
 	public @Column(columnName ="choiceType",columnType = ColumnType.ENUM , enumValue=ChoiceType.class) String CHOICETYPE= "choiceType";
-	public @Column(columnName ="choice",columnType = ColumnType.LIST , value=List.class) String CHOICES= "choices";
+	public @Column(columnName ="choice",columnType = ColumnType.LIST , value=List.class) String CHOICE= "choice";
 	public @Column(columnName ="answer",columnType = ColumnType.STRING) String ANSWER = "answer";
 	public @Column(columnName ="uploadDate",columnType = ColumnType.STRING) String UPLOADDATE= "uploadDate";
 	
-	public void setQuestionId(String questionId);
-	public String getQuestionId();
+	public void setId(String id);
+	public String getId();
 
 	public void setQuestion(String question);
 	public String getQuestion();
@@ -29,9 +29,9 @@ public interface Question {
 	public void setChoiceType(ChoiceType choiceType);
 	public ChoiceType getChoiceType();
 	
-	public void setChoices(List<String> choices);
-	public List<String> getChoices();
-	public void addChoices(String choice);
+	public void setChoice(List<String> choice);
+	public List<String> getChoice();
+	public void addChoice(String choice);
 	
 	
 	public void setUploadDate(String uploadDate);
