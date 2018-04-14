@@ -57,7 +57,7 @@ $(document).ready(function() {
 				contentType : "application/json",
 				crossDomain: true,
 				dataType: "jsonp",  
-				url : remoteUrl+"/"+projectName+"rest/register",
+				url : remoteUrl+"/"+projectName+"/rest/register",
 				data : x,
 				timeout : 100000,
 				success : function(data) {

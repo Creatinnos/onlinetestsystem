@@ -113,7 +113,7 @@ function searchViaAjax(search1) {
 	$.ajax({
 		type : "POST",
 		contentType : "application/json",
-		url : remoteUrl+"/"+projectName+"rest/question/saveList",
+		url : remoteUrl+"/"+projectName+"/rest/question/saveList",
 		data : search1,
 		dataType : 'json',
 		timeout : 100000,
@@ -140,7 +140,7 @@ function findQuestions() {
 	alert("ff");
 	$.ajax({
 		type: 'GET',
-		url: remoteUrl+"/"+projectName+"rest/question/fetchQuestion",
+		url: remoteUrl+"/"+projectName+"/rest/question/fetchQuestion",
 		dataType: "json",
 		success: function(data){
 			$.each(data, function( index, value ) {
