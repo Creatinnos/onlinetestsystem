@@ -103,7 +103,7 @@ $(document).ready(function(){
 	$("#fetchQuestions").click(function(){
 
 		// similar behavior as an HTTP redirect
-		window.location.replace("http://localhost:11958/onlinetestsystem/DisplayQuestions.html");
+		window.location.replace(window.location.origin+"/"+projectName+"/DisplayQuestions.html");
 
 	});
 
@@ -113,7 +113,7 @@ function searchViaAjax(search1) {
 	$.ajax({
 		type : "POST",
 		contentType : "application/json",
-		url : "rest/question/saveList",
+		url : remoteUrl+"/"+projectName+"rest/question/saveList",
 		data : search1,
 		dataType : 'json',
 		timeout : 100000,
@@ -140,7 +140,7 @@ function findQuestions() {
 	alert("ff");
 	$.ajax({
 		type: 'GET',
-		url: "rest/question/fetchQuestion",
+		url: remoteUrl+"/"+projectName+"rest/question/fetchQuestion",
 		dataType: "json",
 		success: function(data){
 			$.each(data, function( index, value ) {

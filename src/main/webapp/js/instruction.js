@@ -24,7 +24,7 @@ $(document).ready(function(){
 	}
 	
 	$("#startTest").click(function(){
-		window.location.replace("http://localhost:11958/onlinetestsystem/exampage.html");
+		window.location.replace(window.location.origin+"/"+projectName+"/exampage.html");
 	});
 
 });

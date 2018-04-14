@@ -31,7 +31,8 @@ $(document).ready(function() {
 		register();
 	});
 	$("#writeExam").click(function(){
-		window.location.replace("http://localhost:11958/onlinetestsystem/exampage.html");
+		alert(window.location.origin);
+		window.location.replace(window.location.origin+"/"+projectName+"/exampage.html");
 	});
 
 	function register() {
@@ -54,7 +55,9 @@ $(document).ready(function() {
 			$.ajax({
 				type : "POST",
 				contentType : "application/json",
-				url : "rest/register",
+				crossDomain: true,
+				dataType: "jsonp",  
+				url : remoteUrl+"/"+projectName+"rest/register",
 				data : x,
 				timeout : 100000,
 				success : function(data) {
@@ -80,13 +83,15 @@ $(document).ready(function() {
 		$.ajax({
 			type : "POST",
 			contentType : "application/json",
-			url : "rest/login",
+			url : remoteUrl+"/"+projectName+"/rest/login",
+			headers: {  'Access-Control-Allow-Origin': 'htt://site allowed to access' },
 			data : x,
-			timeout : 100000,
+		    // The name of the callback parameter, as specified by the YQL service
+		    timeout : 100000,
 			success : function(data) {
 				if(data=='Login Success')
 				{
-					window.location.replace("http://localhost:11958/onlinetestsystem/ExamInstruction.html");
+					window.location.replace(window.location.origin+"/"+projectName+"/ExamInstruction.html");
 				}
 				else
 				{

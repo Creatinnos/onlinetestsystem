@@ -95,7 +95,7 @@ function getAnsweredQuestions()
 function findQuestions() {
 	$.ajax({
 		type : 'GET',
-		url : "rest/question/fetchQuestion",
+		url : remoteUrl+"/"+projectName+"/rest/question/fetchQuestion",
 		success : function(data) {
 			$.each(jQuery.parseJSON(data), function(index, value) {
 				$("#sectionContent").append(

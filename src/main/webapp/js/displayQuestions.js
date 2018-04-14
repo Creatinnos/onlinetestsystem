@@ -10,7 +10,7 @@ $(document).ready(function() {
 function findQuestions() {
 	$.ajax({
 		type : 'GET',
-		url : "rest/question/fetchQuestion",
+		url : remoteUrl+"/"+projectName+"rest/question/fetchQuestion",
 		dataType : "json",
 		success : function(data) {
 			$.each(data, function(index, value) {

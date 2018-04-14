@@ -4,7 +4,7 @@
 create database onlinetestsystem
 
 //Create Question Table
-create table question(ID bigint primary key auto_increment,QUESTION varchar(255),CHOICETYPE varchar(255),CHOICE varchar(255),ANSWER varchar(255),UPLOADDATE varchar(255))
+create table question(ID bigint primary key auto_increment,QUESTION varchar(255),CHOICETYPE varchar(255),CHOICE varchar(255),ANSWER varchar(255),UPLOADDATE varchar(255));
 
 //User Table Creation
-create table user(USERID bigint primary key auto_increment,USERNAME varchar(255),PASSWORD varchar(255),EMAIL varchar(255),PHONENUMBER varchar(255),CREATEDDATE varchar(255),LASTMODIFIEDDATE varchar(255))
+create table user(USERID bigint primary key auto_increment,USERNAME varchar(255),PASSWORD varchar(255),EMAIL varchar(255),COMPANYNAME varchar(255),PHONENUMBER varchar(255),CREATEDDATE varchar(255),LASTMODIFIEDDATE varchar(255));;

@@ -1,7 +1,7 @@
 
 $(document).ready(function(){
 	$("#uploadQuestionbtn").click(function(){
-		window.location.replace("http://localhost:11958/onlinetestsystem/UploadQuestions.html");
+		window.location.replace(window.location.origin+"/"+projectName+"/UploadQuestions.html");
 	})
 	
 })
