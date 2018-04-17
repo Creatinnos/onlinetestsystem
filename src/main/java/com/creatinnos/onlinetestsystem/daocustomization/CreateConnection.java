@@ -5,7 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 public class CreateConnection {
 	/* Get actual class name to be printed on */
-	static Logger log = Logger.getLogger(BusinessObject.class.getName());
+	static Logger log = Logger.getLogger(CreateConnection.class.getName());
 
 	private static JdbcTemplate con;
 

@@ -97,36 +97,37 @@ function findQuestions() {
 		type : 'GET',
 		url : remoteUrl+"/"+projectName+"/rest/question/fetchQuestion",
 		success : function(data) {
-			$.each(jQuery.parseJSON(data), function(index, value) {
+			console.log(data);
+			$.each(data, function(index, value) {
 				$("#sectionContent").append(
-						'<span id="left_qs_'+value["Id"]+'"'
+						'<span id="left_qs_'+value["id"]+'"'
 						+'style="width: 40px; height: 50px; padding-left: 15px; padding-top: 15px; margin: 10px; border-style: double;; border-width: 1px; display: inline-block; float: left">'
-						+value["Id"]+'</span>');
-				var type=value["ChoiceType"];
+						+(index+1)+'</span>');
+				var type=value["type"];
 				var str="";
-				if(type=='CHECKBOX')
+				if(type=='checkbox')
 				{
 					console.log(type);
-					var str='	<div id="question_div_'+value["Id"]+'" style="padding:25px"> <table id="checkbox" style="width: 100%;margin: 0 auto;">'+
+					var str='	<div id="question_div_'+value["id"]+'" style="padding:25px"> <table id="checkbox" style="width: 100%;margin: 0 auto;">'+
 					'<tr style="text-align: left;">'+
-					'	<td colspan="2" id="question_'+value["Id"]+'">'+
-					'	'+value["Question"]+
+					'	<td colspan="2" id="question_'+value["id"]+'">'+
+					'	'+value["question"]+
 					'	</td>'+
 					'</tr>';
 					str=str+'<tr style="text-align: left;">';
 
-					$.each(value["Choice"], function(index1, value1) {
+					$.each(value["choice"], function(index1, value1) {
 
 						if(index1%2==0)
 						{
-							str=str+'<td id="choice"><span id="value"><input id="qchoice_'+index1+'_'+value["Id"]+'" type="checkbox" value='+value1+'/></span><span'+
-							'		id="description">'+value1+'</span></td>';
+							str=str+'<td id="choice"><span id="value"><input id="qchoice_'+index1+'_'+value["id"]+'" type="checkbox" value='+value1+'/></span><span'+
+							'		id="description">'+value1["CHOICE"]+'</span></td>';
 						}
 						else
 						{
 							str=str+
-							'	<td id="choice"><span id="value"><input id="qchoice_'+index1+'_'+value["Id"]+'" type="checkbox"/></span><span'+
-							'		id="description">'+value1+'</span></td>'+
+							'	<td id="choice"><span id="value"><input id="qchoice_'+index1+'_'+value["id"]+'" type="checkbox"/></span><span'+
+							'		id="description">'+value1["CHOICE"]+'</span></td>'+
 							'</tr>';
 							str=str+'<tr style="text-align: left;">';
 						}
@@ -135,25 +136,25 @@ function findQuestions() {
 				}
 				else
 				{
-					var str='<div style="padding:25px" id="question_div_'+value["Id"]+'> <fieldset group="group'+index+'"><table id="radio" style="width: 100%;margin: 0 auto;">'+
+					var str='<div style="padding:25px" id="question_div_'+value["id"]+'> <fieldset group="group'+index+'"><table id="radio" style="width: 100%;margin: 0 auto;">'+
 					'<tr style="text-align: left;">'+
-					'	<td colspan="2" id="question_'+value["Id"]+'">'+
-					'	'+value["Question"]+
+					'	<td colspan="2" id="question_'+value["id"]+'">'+
+					'	'+value["question"]+
 					'	</td>'+
 					'</tr>';
 					str=str+'<tr style="text-align: left;">';
 
-					$.each(value["Choice"], function(index1, value1) {
+					$.each(value["choice"], function(index1, value1) {
 						if(index1%2==0)
 						{
-							str=str+'<td id="choice"><span id="value"><input id="qchoice_'+index1+'_'+value["Id"]+'" name="group'+index+'" type="radio"/></span><span'+
-							'		id="description">'+value1+'</span></td>';
+							str=str+'<td id="choice"><span id="value"><input id="qchoice_'+index1+'_'+value["id"]+'" name="group'+index+'" type="radio"/></span><span'+
+							'		id="description">'+value1["CHOICE"]+'</span></td>';
 						}
 						else
 						{
 							str=str+
-							'	<td id="choice"><span id="value"><input id="qchoice_'+index1+'_'+value["Id"]+'" name="group'+index+'" type="radio"/></span><span'+
-							'		id="description">'+value1+'</span></td>'+
+							'	<td id="choice"><span id="value"><input id="qchoice_'+index1+'_'+value["id"]+'" name="group'+index+'" type="radio"/></span><span'+
+							'		id="description">'+value1["CHOICE"]+'</span></td>'+
 							'</tr>';
 							str=str+'<tr style="text-align: left;">';
 						}

@@ -37,32 +37,39 @@ $(document).ready(function(){
 				tableDiv=$(tableDiv).children();
 			}
 			var temp={};
-			var correctChoice=[];
 			var question=$(tableDiv).children().children().children("#question").children('textarea').val();
 			if(question!=undefined  && question!=""  )
 			{
 				temp["type"]=$(tableDiv).attr("id");
 
 				temp["question"]=question;
+				var choice=[];
+				var correctChoice=false;
 				$(tableDiv).children().children().children("td[id^='choice']").each(function(){
 
 					var isChecked = $(this).children("#value").children("input").prop('checked');
-
-					temp["choice"+i]="\""+$(this).children("#description").children("input").val()+"\"";
+					var choiceTemp={}
+					choiceTemp["choice"]=($(this).children("#description").children("input").val());
 					if(isChecked)
 					{
-						correctChoice.push("choice"+i);
+						choiceTemp["answer"]=true;
+						correctChoice=true;
 					}
+					else
+						{
+						choiceTemp["answer"]=false;
+						}
+					choice.push(choiceTemp);
 					i++;
 				});
-				if(correctChoice.length <=0)
+				temp["choice"]=choice;
+				if(correctChoice==false)
 				{
 					alert("No Answer selected for Question No");
 					return false;
 				}
 				else
 				{
-					temp["correctChoice"]=correctChoice;
 					i=1;
 					completeArr.push(temp);
 				}
@@ -115,17 +122,14 @@ function searchViaAjax(search1) {
 		contentType : "application/json",
 		url : remoteUrl+"/"+projectName+"/rest/question/saveList",
 		data : search1,
-		dataType : 'json',
 		timeout : 100000,
 		success : function(data) {
 			alert("Uploaded Successfully");
 			console.log("SUCCESS: ", data);
-
 		},
 		error : function(e) {
 			alert("Uploaded Error");
 			console.log("ERROR: ", e);
-
 		},
 		done : function(e) {
 			console.log("DONE");

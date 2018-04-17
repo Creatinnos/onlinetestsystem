@@ -55,13 +55,19 @@ $(document).ready(function() {
 			$.ajax({
 				type : "POST",
 				contentType : "application/json",
-				crossDomain: true,
-				dataType: "jsonp",  
 				url : remoteUrl+"/"+projectName+"/rest/register",
 				data : x,
 				timeout : 100000,
 				success : function(data) {
-					loginCheck(username,password);
+					console.log(data["ResponseMessage"]);
+					if(data["ResponseMessage"]!=undefined && data["ResponseMessage"]=='User Already Exist')
+					{
+						alert(data);
+					}
+					else
+					{
+						loginCheck(username,password);
+					}
 				},
 				error : function(e) {
 					alert("Login Error");
@@ -75,7 +81,7 @@ $(document).ready(function() {
 		}
 	}
 	function loginCheck(username,password) {
-		
+
 		var completeArr={}
 		completeArr["userName"] =username;
 		completeArr["password"] =password;
@@ -84,12 +90,11 @@ $(document).ready(function() {
 			type : "POST",
 			contentType : "application/json",
 			url : remoteUrl+"/"+projectName+"/rest/login",
-			headers: {  'Access-Control-Allow-Origin': 'htt://site allowed to access' },
 			data : x,
-		    // The name of the callback parameter, as specified by the YQL service
-		    timeout : 100000,
+			// The name of the callback parameter, as specified by the YQL service
+			timeout : 100000,
 			success : function(data) {
-				if(data=='Login Success')
+				if(data["ResponseMessage"]=='Login Success')
 				{
 					window.location.replace(window.location.origin+"/"+projectName+"/ExamInstruction.html");
 				}

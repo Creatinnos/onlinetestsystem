@@ -1,39 +1,53 @@
 package com.creatinnos.onlinetestsystem.DAOImpl;
 
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
-import com.creatinnos.onlinetestsystem.bo.UserInfo;
-import com.creatinnos.onlinetestsystem.daocustomization.BusinessObject;
-import com.creatinnos.onlinetestsystem.daocustomization.InvokeSetterGetter;
+import org.apache.log4j.Logger;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import com.creatinnos.onlinetestsystem.daocustomization.CreateConnection;
+import com.creatinnos.onlinetestsystem.daocustomization.ExecuteQuery;
 import com.creatinnos.onlinetestsystem.model.LoginModel;
 
-public class LoginDAO {
-
-	public List<UserInfo> find(LoginModel loginModel,String... columnNames){
-		HashMap<String, Object> map=new HashMap<>();
-		for(String columnName:columnNames)
-		{
-			Object str=InvokeSetterGetter.invokeGetter(loginModel.getBO(), columnName);
-			if(str!=null)
+public class LoginDao {
+	static Logger log = Logger.getLogger(JdbcTemplate.class.getName());
+	
+	ExecuteQuery executeQuery =new ExecuteQuery();
+	public boolean find(String username,String password)
+	{
+		String findUser="select * from organization where username='"+username+"' and password='"+password+"';";
+		return executeFetch(findUser);
+	}
+	
+	public boolean register(LoginModel loginModel)
+	{
+		String query="insert into organization ("
+				+"USERNAME ,PASSWORD ,EMAIL ,ORGANIZATIONNAME ,PHONENUMBER ,CREATEDDATE ,LASTMODIFIEDDATE) "
+				+"VALUES ("
+				+"'"+loginModel.getUserName()+"',"
+				+"'"+loginModel.getPassword()+"',"
+				+"'"+loginModel.getEmail()+"',"
+				+"'"+loginModel.getCompanyName()+"',"
+				+"'"+loginModel.getPhoneNumber()+"',"
+				+"'"+(new Date())+"',"
+				+"'"+(new Date())+"')";
+		return executeQuery.executeInsert(query);
+	}
+	
+	
+	private static  boolean executeFetch(String query) {
+		try {
+			List<Map<String, Object>> maps=CreateConnection.getConnection().queryForList(query);
+			
+			if(maps!=null && maps.size()>0)
 			{
-				map.put(columnName, str);	
+				return true;
 			}
-			System.out.println(str);
+		} catch (Exception exception) {
+			log.error(exception);
 		}
-		return BusinessObject.find(UserInfo.class,map);
-	}
-
-	public List<String> find(LoginModel loginModel){
-		return BusinessObject.findAll(UserInfo.class);
-	}
-	public List<UserInfo> save(LoginModel loginModel){
-		UserInfo userInfo=loginModel.getBO();
-		BusinessObject.save(userInfo);
-		HashMap<String, Object> map=new HashMap<>();
-		map.put("username", loginModel.getBO().getUsername());
-		map.put("password", loginModel.getBO().getPassword());
-		return BusinessObject.find(UserInfo.class,map);
+		return false;
 	}
 }

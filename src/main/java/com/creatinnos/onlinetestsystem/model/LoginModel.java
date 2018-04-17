@@ -1,11 +1,5 @@
 package com.creatinnos.onlinetestsystem.model;
 
-import java.util.Date;
-
-import com.creatinnos.onlinetestsystem.bo.UserInfo;
-import com.creatinnos.onlinetestsystem.daocustomization.BusinessObject;
-import com.creatinnos.onlinetestsystem.utils.Utilities;
-
 public class LoginModel {
 
 	private String userName;
@@ -50,32 +44,4 @@ public class LoginModel {
 				+ phoneNumber + ", companyName=" + companyName + "]";
 	}
 
-	public UserInfo getBO()
-	{
-		System.out.println(toString());
-		UserInfo userInfo = BusinessObject.create(UserInfo.class);
-		if(userName !=null)
-		{
-			userInfo.setUsername(userName);
-		}
-		if(password !=null)
-		{
-			userInfo.setPassword(password);
-		}
-		if(email !=null)
-		{
-			userInfo.setEmail(email);
-		}
-		if(phoneNumber !=null)
-		{
-			userInfo.setPhoneNumber(phoneNumber);
-		}
-		if(companyName !=null)
-		{
-			userInfo.setCompanyName(companyName);
-		}
-		userInfo.setCreatedDate(Utilities.getCurrentDateString());
-		userInfo.setLastModifiedDate(Utilities.getCurrentDateString());
-		return userInfo;
-	}
 }
