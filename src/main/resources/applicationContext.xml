@@ -8,11 +8,6 @@
 
 	<context:component-scan base-package="com.creatinnos.onlinetestsystem.rest" />
 	
-	<!-- 
-        <bean id="transactionBo"
-                  class="com.creatinnos.onlinetestsystem.rest.samples.TransactionBoImpl" />
-                   -->
-                  
 	<bean id="ds"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
@@ -25,9 +20,9 @@
 		<property name="dataSource" ref="ds"></property>
 	</bean>
 
-	<bean id="edao"
+<bean id="edao"
 		class="com.creatinnos.onlinetestsystem.daocustomization.CreateConnection">
 		<property name="con" ref="jdbcTemplate"></property>
-	</bean>
+	</bean> 
 
 </beans>  

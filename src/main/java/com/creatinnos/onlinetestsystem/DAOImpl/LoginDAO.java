@@ -12,7 +12,7 @@ import com.creatinnos.onlinetestsystem.daocustomization.ExecuteQuery;
 import com.creatinnos.onlinetestsystem.model.LoginModel;
 
 public class LoginDao {
-	static Logger log = Logger.getLogger(JdbcTemplate.class.getName());
+	static Logger log = Logger.getLogger(LoginDao.class.getName());
 	
 	ExecuteQuery executeQuery =new ExecuteQuery();
 	public boolean find(String username,String password)

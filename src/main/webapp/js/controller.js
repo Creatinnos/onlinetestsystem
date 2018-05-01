@@ -1,18 +1,39 @@
 var CommonNamespace = {};
 var loginNamespace = {};
 var instructionNamespace = {};
-
+var adminHomeNamespace = {};
+var addNewExamNamespace = {};
+var state = false;
 CommonNamespace.getContainer = function() {
 	CommonNamespace.startLoader();
-	if(window.location.href.indexOf("#login") > 0){
+	$(".menus").find('h4').css("color", "#FFF");
+	console.log(window.location.href.indexOf(""));
+	if(window.location.href.indexOf("#login") > 0 || window.location.href.indexOf("") > 0){
 		document.title = "Creatinnos | Login";
+		$("#headerSec,.headerBlock").hide();
 		CommonNamespace.ajaxGetRequest("view/login.html", '', '',
 				loginNamespace.getHtmlSuccess, loginNamespace.getHtmlFailed);
-	}else if(window.location.href.indexOf("#instruction") > 0){
+	}else if(window.location.href.indexOf("#adminHome") > 0){
+		document.title = "Creatinnos | Dashboard";
+		$(".adminHomeMenu").css("color", "#feffd4");
+		CommonNamespace.ajaxGetRequest("view/adminHome.html", '', '',
+				adminHomeNamespace.getHtmlSuccess, adminHomeNamespace.getHtmlFailed);
+	}else if(window.location.href.indexOf("#addNewExam") > 0){
+		document.title = "Creatinnos | Add New Exam";
+		$(".addNewExamMenu").css("color", "#feffd4");
+		CommonNamespace.ajaxGetRequest("view/addNewExam.html", '', '',
+				addNewExamNamespace.getHtmlSuccess, addNewExamNamespace.getHtmlFailed);
+	}else if(window.location.href.indexOf("#instructions") > 0){
 		document.title = "Creatinnos | Instructions";
 		CommonNamespace.ajaxGetRequest("view/examInstruction.html", '', '',
 				instructionNamespace.getHtmlSuccess, instructionNamespace.getHtmlFailed);
-	}
+	} else
+		{
+		document.title = "Creatinnos | Login";
+		$("#headerSec,.headerBlock").hide();
+		CommonNamespace.ajaxGetRequest("view/login.html", '', '',
+				loginNamespace.getHtmlSuccess, loginNamespace.getHtmlFailed);
+		}
 	$(function(){
 	    $('.button-checkbox').each(function(){
 			var $widget = $(this),
@@ -65,7 +86,7 @@ CommonNamespace.getContainer = function() {
 				updateDisplay();
 				// Inject the icon if applicable
 				if ($button.find('.state-icon').length == 0) {
-					$button.prepend('<i class="state-icon ' + settings[$button.data('state')].icon + '"></i> ');
+					$button.prepend('<i class="state-icon ' + settings[$button.data('state')].icon + '"></i>ï¿½');
 				}
 			}
 			$(".btn-pref .btn").click(function () {
@@ -76,12 +97,19 @@ CommonNamespace.getContainer = function() {
 			init();
 		});
 	});
+	
+	$(window).on('resize', function (){
+		CommonNamespace.common();
+	});
+	CommonNamespace.pageEvents();
 };
+
 
 loginNamespace.getHtmlSuccess = function(response) {
 	$('#layoutContainer').empty();
 	$('#layoutContainer').append($(response)[1].outerHTML);
 	CommonNamespace.stopLoader();
+	//CommonNamespace.getContainer();
 	CommonNamespace.pageEvents();
 };
 
@@ -200,7 +228,45 @@ CommonNamespace.pageEvents = function(){
 	    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 	    return re.test(String(email).toLowerCase());
 	}
+	
+	$("#logout").off().click(function(){
+		CommonNamespace.changeHref("#login");
+		CommonNamespace.getContainer();
+	});
+	
+	$("#sideMenus").off().click(function(){
+		if(state){
+			$("#menuSec").animate({
+				'marginLeft':'-280px'
+			});
+		}else{
+			$("#menuSec").animate({
+				'marginLeft':'0px'
+			});
+		}
+		state = state ? false : true;
+		return state;
+	});
+	
+	$(".menus").off().click(function(){
+		var selectedMenu = $(this).find('h4').text().trim();
+		if(selectedMenu === "Home") {
+			CommonNamespace.changeHref("#adminHome");
+		}else if(selectedMenu === "Add New Exam") {
+			CommonNamespace.changeHref("#addNewExam");
+		}
+		state = false;
+		$(this).find('h4').css("color", "#FFF");
+		$(this).css("color", "#feffd4");
+		$("#menuSec").animate({
+			'marginLeft':'-280px'
+		});
+		CommonNamespace.getContainer();
+	});
+
+	
 };
+
 
 CommonNamespace.checkLogin = function(userName, password) {
 	var data = {
@@ -219,7 +285,7 @@ CommonNamespace.checkLogin = function(userName, password) {
         success: function(response){
         	if(response.ResponseMessage == "Login Success"){
     			$("#loginError").hide();
-    			CommonNamespace.changeHref("#instruction");
+    			CommonNamespace.changeHref("#adminHome");
     			CommonNamespace.getContainer();
     		}else{
     			$("#loginError").text("Invalid Username/Password");
@@ -279,4 +345,13 @@ CommonNamespace.startLoader = function() {
 //Function to stop the loader
 CommonNamespace.stopLoader = function() {
     $(".section-loader").css("display", "none");
+};
+
+//Function to stop the loader
+CommonNamespace.common = function() {
+	$("#headerSec,.headerBlock").show();
+	var layoutHeight  = $(window).height() - ($("#headerSec").outerHeight() + $(".headerBlock").outerHeight());
+	$("#layoutContainer").height(layoutHeight);
+	$(".menuSection").height(layoutHeight);
+	
 };
