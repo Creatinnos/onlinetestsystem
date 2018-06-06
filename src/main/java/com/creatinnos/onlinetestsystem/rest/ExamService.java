@@ -1,42 +1,46 @@
 package com.creatinnos.onlinetestsystem.rest;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.springframework.web.bind.annotation.RequestBody;
-
-import com.creatinnos.onlinetestsystem.model.Answer;
+import com.creatinnos.onlinetestsystem.DAOImpl.ExamDao;
+import com.creatinnos.onlinetestsystem.model.NewExam;
 
 @Path("/exam")
 public class ExamService {
 
 	@POST
-	@Path("/saveAnswer")
+	@Path("/addExam")
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.TEXT_PLAIN)
-	public String consumeJSONsend(Answer answer) {
-		System.out.println("consumeJSONList Client : " + answer.toString());;
-		//BusinessObject.save(answer);
+	@Produces(MediaType.APPLICATION_JSON)
+	public String addNewExam(NewExam newExam) {
+		ExamDao dao=new ExamDao();
+		dao.saveNewExam(newExam);
+		System.out.println("consumeJSONList Client : " + newExam.toString());;
 		return "yes";
 	}
 
-	@POST
-	@Path("/saveAnswerList")
+	@GET
+	@Path("/fetchAllExam")
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.TEXT_PLAIN)
-	public void consumeJSONList2(@RequestBody List<Answer> answers) {
-		String output = answers.size()+"consumeJSONList Client : " + answers.toString() + "\n\n";
-		System.out.println(output);
-		/*for(int i=0;i<answers.size();i++)
-		{
-			com.creatinnos.onlinetestsystem.bo.Question question=answers.get(i).getBO();
-			System.out.println(Utilities.questionBoToString(question));;
-			BusinessObject.save(question);
-		}*/
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<NewExam> fetchAllExamList() {
+		ExamDao dao=new ExamDao();
+		return dao.fetchAllExam();
+	}
+	
+	@GET
+	@Path("/fetchExam")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<NewExam> fetchExamList(String examId) {
+		ExamDao dao=new ExamDao();
+		return dao.fetchExam(examId);
 	}
 }

@@ -1,8 +1,11 @@
 package com.creatinnos.onlinetestsystem.utils;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -55,4 +58,26 @@ public class Utilities {
 		Calendar calendar= Calendar.getInstance();
 		return calendar.getTime().toString();
 	}
+	
+	public static List<HashMap<String,Object>> getListOfHashMap(List<Map<String,Object>> list)
+	{
+		List<HashMap<String,Object>> hashMaps=new ArrayList<HashMap<String,Object>>();
+		if(list != null)
+		{
+			for(int i=0;i<list.size();i++)
+			{
+				Map<String, Object> map=list.get(i);
+				HashMap<String,Object> hashMap=new HashMap<>();
+				for(String str:map.keySet())
+				{
+					hashMap.put(str, map.get(str));
+				}
+				hashMaps.add(hashMap);
+			}
+		}
+		return hashMaps;
+	}
 }
+
+
+

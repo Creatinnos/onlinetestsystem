@@ -9,7 +9,7 @@ public class Question {
 	private String id;
 	private String type;
 	private String question;
-	private List<Map<String, Object>> choice;
+	private List<HashMap<String, Object>> choice;
 	/*private String choice2;
 	private String choice3;
 	private String choice4;
@@ -50,11 +50,11 @@ public class Question {
 		this.question = question;
 	}
 	
-	public List<Map<String,Object>> getChoice() {
+	public List<HashMap<String, Object>> getChoice() {
 		return choice;
 	}
 
-	public void setChoice(List<Map<String, Object>> choices) {
+	public void setChoice(List<HashMap<String, Object>> choices) {
 		this.choice = choices;
 	}
 

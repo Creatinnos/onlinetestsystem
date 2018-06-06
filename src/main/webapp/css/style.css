@@ -128,6 +128,67 @@ body {
     padding-top: 65px;
 }
 
+.checkbox {
+  padding-left: 20px; }
+  .checkbox label {
+    display: inline-block;
+    position: relative;
+    padding-left: 5px; }
+    .checkbox label::before {
+      content: "";
+      display: inline-block;
+      position: absolute;
+      width: 17px;
+      height: 17px;
+      left: 0;
+      margin-left: -20px;
+      border: 1px solid #cccccc;
+      border-radius: 3px;
+      background-color: #fff;
+      -webkit-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+      -o-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+      transition: border 0.15s ease-in-out, color 0.15s ease-in-out; }
+    .checkbox label::after {
+      display: inline-block;
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      left: 0;
+      top: 0;
+      margin-left: -20px;
+      padding-left: 3px;
+      padding-top: 1px;
+      font-size: 11px;
+      color: #555555; }
+  .checkbox input[type="checkbox"] {
+    opacity: 0; }
+    .checkbox input[type="checkbox"]:focus + label::before {
+      outline: thin dotted;
+      outline: 5px auto -webkit-focus-ring-color;
+      outline-offset: -2px; }
+    .checkbox input[type="checkbox"]:checked + label::after {
+      font-family: 'FontAwesome';
+      content: "\f00c"; 
+      color:#FFF;
+      }
+    .checkbox input[type="checkbox"]:disabled + label {
+      opacity: 0.65; }
+      .checkbox input[type="checkbox"]:disabled + label::before {
+        background-color: #eeeeee;
+        cursor: not-allowed; }
+  .checkbox.checkbox-circle label::before {
+    border-radius: 50%; }
+  .checkbox.checkbox-inline {
+    margin-top: 0; }
+    
+    .checkbox, .radio {
+    display: inline-block;
+    }
+.checkbox-success input[type="checkbox"]:checked + label::before {
+  background-color: #5cb85c;
+  border-color: #5cb85c; 
+  }
+  
 /********************
 ******Insruction*****
 *********************/
@@ -136,11 +197,11 @@ body {
     background-color: #655643;
 }
 .navbar-inverse {
-    background-color: #655643;
-    border-color: #655643;
+    background-color: #4e3528;
+    border-color: #4e3528;
 }
 .navbar-inverse .navbar-nav>li>a {
-    color: #feffd4;
+    color: #E7DFC6;
 }
 .navbar {
     border-radius: 0px !important;
@@ -149,7 +210,7 @@ body {
 .logo {
     padding:0 5px;
     font-size: 35px;
-    color: #feffd4;
+    color: #E7DFC6;
     font-family: BerkshireSwash-Regular;
 }
 .logoff{
@@ -159,13 +220,13 @@ body {
     cursor: pointer;
 }
 .headerBlock{
-	background: #80BCA3;
+	background: #E7DFC6;
 	height:50px;
 	padding: 10px;
 }
 .headerContent{
     display: inline-block;
-    color: #ffffff;
+    color: #4e3528;
     font-size: 24px;
 }
 .instArea{
@@ -192,44 +253,67 @@ body {
 ******AdminHome******
 *********************/
 .examList{
-    padding: 5px 20px;
     border-bottom: 1px solid #ccc;
     cursor: pointer;
 }
 .examList:hover{
-	background:#80bca314;
+	background:#e7dfc64a;
 }
 .dashboardSec{
 	margin-bottom:20px;
 }
+.heading{
+	font-size: 18px;
+    font-weight: bold;
+    margin: 5px 0px;
+}
+.warning{
+	color: #f0ad4e;
+    margin-right: 10px;
+}
+.green{
+	color: #32a741;
+    margin-right: 10px;
+}
+.red{
+	color: #de1515;
+    margin-right: 10px;
+}
 .sectionHeading{
-    border-bottom: 2px solid #655643;
+    border-bottom: 2px solid #131B23;
     padding: 7px 0px;
     font-size: 18px;
-    color: #655643;
+    color: #4e3528;
 }
 .sectionHeading .glyphicons{
 	font-size:16px;
 }
-.sectionHeading input{
+#searchUpExams {
 	float: right;
-    width: 40%;
+    width: 40% !important;
+    height: 27px;
+        border-radius: 0px;
+}
+#searching {
+    float: right;
+    cursor: pointer;
+    width: 25px;
     height: 27px;
 }
 .progress {
     margin-bottom: 8px;
 }
-.noPaddingStart{
-	padding:0px 15px 0px 0px;
+.floatRight{
+	float:right;
 }
 .greyed {
 	color: #a29b9b !important;
 }
 .menus{
 	padding: 5px 30px;
-    border-bottom: 1px solid #826c51;
-    cursor: pointer;
-    color: #FFF;
+	border-bottom: 1px solid #634739;
+	cursor: pointer;
+	color: #FFF;
 }
 .menus:hover{
 	background: #ffffff21;
@@ -240,7 +324,7 @@ body {
 }
 .menuList{
 	font-size: 24px;
-	color: #655643;
+	color: #4e3528;
 	cursor:pointer;
 }
 #menuSec{
@@ -248,7 +332,7 @@ body {
 }
 .menuSection {
     width: 280px;
-    background: #655643;
+    background: #7d5e4e;
     position: absolute;
     z-index: 9999;
     overflow-y:auto;
@@ -268,8 +352,84 @@ body {
 	    width: 15% !important;
     display: inline-block;
 }
+.addNewExamSec .col-md-6, .col-xs-6{
+	margin: 5px 0px;
 .addNewExamSec .row{
 	margin: 10px 0px;
+}
+.addNewCandidate .emptyRow{
+	margin: 0.5% 0.5%;
+    width: 2%;
+    float: left;
+}
+.addNewCandidate .row{
+	margin: 0.5% 0.5%;
+    width: 11%;
+    float: left;
+}
+
+.addNewCandidate .dateField{
+	width: 8%;
+}
+
+.addNewCandidate .phoneField{
+	width: 8%;
+}
+
+.addNewCandidate label{
+	padding-left: 20%;
+    
+}
+.addNewCandidate [class^="content"] label{
+	font-weight: 100;
+	text-overflow: ellipsis;
+    overflow: hidden !important;
+}
+
+.addNewCandidate .formFields{
+    width: 100% !important;
+}
+
+.addNewUser .emptyRow{
+	margin: 0.5% 0.5%;
+    width: 2%;
+    float: left;
+}
+.addNewUser .row{
+	margin: 0.5% 0.5%;
+    width: 11%;
+    float: left;
+}
+
+.addNewUser .dateField{
+	width: 8%;
+}
+
+.addNewUser .phoneField{
+	width: 8%;
+}
+
+.addNewUser label{
+	padding-left: 20%;
+    
+}
+.addNewUser [class^="content"] label{
+	font-weight: 100;
+	text-overflow: ellipsis;
+    overflow: hidden !important;
+}
+
+.addNewUser .formFields{
+    width: 100% !important;
+}
+.addNewUser .actionButtons{
+    margin: 0.5% 0.5%;
+    width: 15%;
+    float: left;
+}
+
+.roleClass{
+	margin: 1% 1%;
 }
 
 .material-switch > input[type="checkbox"] {
@@ -317,14 +477,196 @@ body {
     left: 20px;
 }
 
+.addRemoveBtn{
+    position: relative;
+    top: 14px;
+    left: 10px;
+}
+.appendDiv{
+	    margin: 5px 0px;
+}
+
+/********************
+*****Questions*******
+*********************/
+
+.twitter-typeahead{
+width:100%;
+}
+
+.twitter-typeahead .tt-query,
+.twitter-typeahead .tt-hint {
+  margin-bottom: 0;
+}
+.tt-dropdown-menu {
+  min-width: 160px;
+  margin-top: 2px;
+  padding: 5px 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0,0,0,.2);
+  *border-right-width: 2px;
+  *border-bottom-width: 2px;
+  -webkit-border-radius: 6px;
+     -moz-border-radius: 6px;
+          border-radius: 6px;
+  -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+     -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+          box-shadow: 0 5px 10px rgba(0,0,0,.2);
+  -webkit-background-clip: padding-box;
+     -moz-background-clip: padding;
+          background-clip: padding-box;
+  width:100%;        
+}
+
+.tt-suggestion {
+  display: block;
+  padding: 3px 20px;
+}
+
+.tt-suggestion.tt-is-under-cursor {
+  color: #fff;
+  background-color: #0081c2;
+  background-image: -moz-linear-gradient(top, #0088cc, #0077b3);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0077b3));
+  background-image: -webkit-linear-gradient(top, #0088cc, #0077b3);
+  background-image: -o-linear-gradient(top, #0088cc, #0077b3);
+  background-image: linear-gradient(to bottom, #0088cc, #0077b3);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0077b3', GradientType=0)
+}
+
+.tt-suggestion.tt-is-under-cursor a {
+  color: #fff;
+}
+
+.tt-suggestion p {
+  margin: 0;
+}
+
+.questBlock{
+	    margin: 15px 0px;
+}
+.questBlock .row{
+	    margin: 10px 0px;
+}
+.questBlock label{
+	    padding:5px 0px;
+}
+.questfields{
+	width:80%;
+	display: inline-block;
+}
+.questBlock legend {
+    font-size: 15px;
+    font-weight: 600;
+}
+.delQuest{
+	font-size: 18px;
+    color: #b50d0d;
+    cursor:pointer;
+}
+
+/* Switch */
+.modeCol{
+	    display: inline;
+    float: right;
+        position: relative;
+    top: 2px;
+}
+
+.switch {
+    width: 130px;
+    height: 32px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50px;
+    background: #fff;
+    border: 2px solid #4e3528;
+    margin-right: 10px;
+    display: inline-block;
+}
+.switch > span.on {
+    color: #FFF;
+    transition: color ease-in 0.23s 0.09s;
+    -moz-transition: color ease-in 0.23s 0.09s;
+    -webkit-transition: color ease-in 0.23s 0.09s;
+}
+.switch > span {
+    width: 70px;
+    height: 28px;
+    display: table-cell;
+    position: relative;
+    z-index: 100;
+    text-align: center;
+    vertical-align: middle;
+    color: #e7dfc6;
+    cursor: pointer;
+    transition: color ease-in 0.23s 0.09s;
+    -moz-transition: color ease-in 0.23s 0.09s;
+    -webkit-transition: color ease-in 0.23s 0.09s;
+}
+.switch .switch_bg {
+	width: 73px;
+	height: 28px;
+	position: absolute;
+	top: 0px;
+	left: -11px;
+	transform: skew(-30deg);
+	-moz-transform: skew(-30deg);
+	-webkit-transform: skew(-30deg);
+	transition: all ease-in 0.23s;
+	-moz-transition: all ease-in 0.23s;
+	-webkit-transition: all ease-in 0.23s;
+	background: #4e3528;
+	box-shadow: 0px 0px 3px 1px #000000;
+}
+.switch .right{
+    left: 65px;
+    transition: all ease-in 0.23s;
+    -moz-transition: all ease-in 0.23s;
+    -webkit-transition: all ease-in 0.23s;
+}
+.radio_btns{
+  display: none;
+}
+.switch span {
+      width: 100px;
+      height: 30px;
+      display: table-cell;
+      position: relative;
+      z-index: 100;
+      text-align: center;
+      vertical-align: middle;
+      color: #4e3528;
+      cursor: pointer;
+      transition: color ease-in 0.23s 0.09s;
+      -moz-transition: color ease-in 0.23s 0.09s;
+      -webkit-transition: color ease-in 0.23s 0.09s;
+}
+.on {
+        color: #fff;
+        transition: color ease-in 0.23s 0.09s;
+        -moz-transition: color ease-in 0.23s 0.09s;
+        -webkit-transition: color ease-in 0.23s 0.09s;
+    }
+
 @media (min-width:240px) and (max-width:700px) {
 	.sectionHeading {
     font-size: 15px;
 	}
 	
-	.sectionHeading input {
-    width: 44%;
+	#searchUpExams {
+	float: right;
+    width: 44% !important;
     height: 22px;
+        border-radius: 0px;
+	}
+	#searching {
+	    float: right;
+	    cursor: pointer;
+	    width: 21px;
+	    height: 22px;
 	}
 	.examList {
     padding: 5px 5px;
@@ -335,6 +677,9 @@ body {
 	.formFields{
 	    width: 45%;
 	    display:inline-block;
+	}
+	.instTextArea{
+	    width: 40% !important;
 	}
 	.datepicker.dropdown-menu{
 		left:50px !important;

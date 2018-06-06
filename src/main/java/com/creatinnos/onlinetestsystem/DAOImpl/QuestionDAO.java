@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +21,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import com.creatinnos.onlinetestsystem.daocustomization.CreateConnection;
 import com.creatinnos.onlinetestsystem.daocustomization.ExecuteQuery;
 import com.creatinnos.onlinetestsystem.model.Question;
+import com.creatinnos.onlinetestsystem.utils.Utilities;
 
 public class QuestionDao extends NamedParameterJdbcDaoSupport{
 	static Logger log = Logger.getLogger(JdbcTemplate.class.getName());
@@ -60,7 +61,7 @@ public class QuestionDao extends NamedParameterJdbcDaoSupport{
 		final String choiceQuery="insert into choices(QUESTIONID,CHOICE, ISANSWER) VALUES (?,?,?)";
 		log.info(questionQuery);
 
-		final List<Map<String, Object>> maps=question.getChoice();
+		final List<HashMap<String, Object>> maps=question.getChoice();
 		for(int i=0;i<maps.size();i++)
 		{
 			final int j=i;
@@ -116,7 +117,7 @@ public class QuestionDao extends NamedParameterJdbcDaoSupport{
 					List<Map<String, Object>> choices=CreateConnection.getConnection().queryForList(choiceQuery);
 					log.info(choiceQuery+"-->");
 					log.info(choices);
-					question.setChoice(choices);
+					question.setChoice(Utilities.getListOfHashMap(choices));
 					list.add(question);
 				}
 			}

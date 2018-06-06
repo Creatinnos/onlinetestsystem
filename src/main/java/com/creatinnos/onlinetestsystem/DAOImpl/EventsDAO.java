@@ -10,8 +10,6 @@ import com.creatinnos.onlinetestsystem.Constant.QueryConstants;
 import com.creatinnos.onlinetestsystem.daocustomization.CreateConnection;
 import com.creatinnos.onlinetestsystem.model.Event;
 import com.creatinnos.onlinetestsystem.model.Events;
-import com.creatinnos.onlinetestsystem.model.ExamInfo;
-import com.creatinnos.onlinetestsystem.model.ExamInfos;
 import com.creatinnos.onlinetestsystem.utils.DateUtil;
 
 public class EventsDAO {
