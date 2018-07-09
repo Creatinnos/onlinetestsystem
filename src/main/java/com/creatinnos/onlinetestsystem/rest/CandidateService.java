@@ -9,39 +9,44 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.creatinnos.onlinetestsystem.DAOImpl.CandidateDAO;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.creatinnos.onlinetestsystem.DAOImpl.CandidateDao;
 import com.creatinnos.onlinetestsystem.model.candidate.Candidates;
 
-@Path("/")
+@Controller
 public class CandidateService {
 
-	@GET
-	@Path("/fetchAllCandidates")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
+	@ResponseBody
+	@RequestMapping(value = "/fetchAllCandidates", method = RequestMethod.GET )
+
 	public List<Candidates> loadAllCandidate()
 	{
-		CandidateDAO candidateDAO=new CandidateDAO();
+		CandidateDao candidateDAO=new CandidateDao();
 		return candidateDAO.fetchAllCandidates();
 	}
 	
-	@POST
-	@Path("/saveCandidates")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Candidates saveCandidate(Candidates candidate)
+
+	@ResponseBody
+	@RequestMapping(value = "/saveCandidates", method = RequestMethod.POST )
+
+	public Candidates saveCandidate(@RequestBody Candidates candidate)
 	{
-		CandidateDAO candidateDAO=new CandidateDAO();
+		CandidateDao candidateDAO=new CandidateDao();
 		return candidateDAO.saveCandidates(candidate);
 	}
 
-	@POST
-	@Path("/updateCandidates")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Candidates updateCandidate(Candidates candidate)
+
+	@ResponseBody
+	@RequestMapping(value = "/updateCandidates", method = RequestMethod.POST )
+
+	public Candidates updateCandidate(@RequestBody Candidates candidate)
 	{
-		CandidateDAO candidateDAO=new CandidateDAO();
+		CandidateDao candidateDAO=new CandidateDao();
 		if(candidateDAO.updateCandidates(candidate))
 		{
 			System.out.println("save --> "+candidate);
@@ -49,13 +54,14 @@ public class CandidateService {
 		}
 		return null;
 	}
-	@POST
-	@Path("/updateAllCandidates")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<Candidates> updateCandidates(List<Candidates> candidates)
+
+
+	@ResponseBody
+	@RequestMapping(value = "/updateAllCandidates", method = RequestMethod.POST )
+
+	public List<Candidates> updateCandidates(@RequestBody List<Candidates> candidates)
 	{
-		CandidateDAO candidateDAO=new CandidateDAO();
+		CandidateDao candidateDAO=new CandidateDao();
 		if(candidateDAO.updateCandidates(candidates))
 		{
 			System.out.println("save --> "+candidates);

@@ -4,44 +4,52 @@
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
-  
-<!-- <listener>
-   	<listener-class>
-        com.creatinnos.onlinetestsystem.listener.MyServletContextListener2
-    </listener-class>
-</listener> -->
-<listener>
-    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-</listener>
 
+		<listener>
+		   	<listener-class>
+		        com.creatinnos.onlinetestsystem.listener.MyServletContextListener
+		    </listener-class>
+		</listener>
+
+		<filter>  
+			<filter-name>filter</filter-name>  
+			<filter-class>com.creatinnos.onlinetestsystem.listener.MyFilter</filter-class>  
+		</filter>  
+		   
+		<filter-mapping>  
+			<filter-name>filter</filter-name>  
+			<url-pattern>/rest/*</url-pattern>  
+		</filter-mapping>  
+
+	  	<!-- <context-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:applicationContext.xml</param-value>
+		</context-param> -->
+		 
+	<!-- Creates the Spring Container shared by all Servlets and Filters -->		
+	<listener>
+	    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:applicationContext.xml</param-value>
+		<param-value>/WEB-INF/root-context.xml</param-value>
 	</context-param>
 
-
+	<!-- Processes application requests -->
 	<servlet>
-		<servlet-name>jersey-serlvet</servlet-name>
-		<servlet-class>
-			org.glassfish.jersey.servlet.ServletContainer
-		</servlet-class>
-		<init-param>
-			<param-name>
-                        jersey.config.server.provider.packages
-                        </param-name>
-			<param-value>com.creatinnos.onlinetestsystem.rest</param-value>
+        <servlet-name>jersey</servlet-name>
+          <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+          <init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring-servlet.xml</param-value>
 		</init-param>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-<servlet>
-    <servlet-name>CrunchifyTutorials</servlet-name>
-    <servlet-class>com.creatinnos.onlinetestsystem.rest.CrunchifyServletExample</servlet-class>
-    <load-on-startup>2</load-on-startup>
-</servlet>
-	<servlet-mapping>
-		<servlet-name>jersey-serlvet</servlet-name>
-		<url-pattern>/rest/*</url-pattern>
-	</servlet-mapping>
-
+          <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>jersey</servlet-name>
+        <url-pattern>/rest/*</url-pattern>
+    </servlet-mapping>
 
 </web-app>

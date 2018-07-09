@@ -2,7 +2,7 @@ package com.creatinnos.onlinetestsystem.model;
 
 import java.util.ArrayList;
 
-public class QuestionAnswer
+public class QuestionAnswer extends Token
 {
 	private String questionId;
 	private ArrayList<String> selectedChoice;

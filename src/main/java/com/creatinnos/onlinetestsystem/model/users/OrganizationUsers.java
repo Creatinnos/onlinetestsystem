@@ -1,7 +1,8 @@
 package com.creatinnos.onlinetestsystem.model.users;
 
-public class OrganizationUsers {
-	
+import com.creatinnos.onlinetestsystem.model.Token;
+
+public class OrganizationUsers extends Token{
 	
 	private String userId; 
 	private String name; 

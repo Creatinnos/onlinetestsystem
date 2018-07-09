@@ -1,16 +1,43 @@
 package com.creatinnos.onlinetestsystem.model;
 
-import java.util.ArrayList;
+public class SubCategory extends Token {
 
-public class SubCategory {
+	private String subCategoryId;
+	private String subCategoryName;
+	private String categoryId;
 
-	private ArrayList<String> subjects;
+	private String organizationId;
+	
 
-	public ArrayList<String> getSubjects() {
-		return subjects;
+	public String getSubCategoryId() {
+		return subCategoryId;
 	}
 
-	public void setSubjects(ArrayList<String> subjects) {
-		this.subjects = subjects;
+	public void setSubCategoryId(String subCategoryId) {
+		this.subCategoryId = subCategoryId;
+	}
+
+	public String getSubCategoryName() {
+		return subCategoryName;
+	}
+
+	public void setSubCategoryName(String subCategoryName) {
+		this.subCategoryName = subCategoryName;
+	}
+
+	public String getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(String categoryId) {
+		this.categoryId = categoryId;
+	}
+	
+	public String getOrganizationId() {
+		return organizationId;
+	}
+
+	public void setOrganizationId(String organizationId) {
+		this.organizationId = organizationId;
 	}
 }

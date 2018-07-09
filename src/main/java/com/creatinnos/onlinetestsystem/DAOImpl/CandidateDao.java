@@ -20,9 +20,9 @@ import com.creatinnos.onlinetestsystem.Constant.QueryConstants;
 import com.creatinnos.onlinetestsystem.daocustomization.CreateConnection;
 import com.creatinnos.onlinetestsystem.model.candidate.Candidates;
 
-public class CandidateDAO {
+public class CandidateDao {
 
-	static Logger log = Logger.getLogger(CandidateDAO.class.getName());
+	static Logger log = Logger.getLogger(CandidateDao.class.getName());
 
 	public List<Candidates> fetchAllCandidates() {
 		return executeFetch(QueryConstants.FETCH_ALL_CANDIDATE);
@@ -41,7 +41,7 @@ public class CandidateDAO {
 				ps.setString(4, candidate.getMotherName());
 				Calendar calendar=Calendar.getInstance();
 				SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
-				ps.setString(5, dateFormat.format(calendar.getTime()));
+				ps.setString(5, candidate.getDob());
 				ps.setString(6, candidate.getAddress());
 				ps.setString(7, candidate.getEmail());
 				ps.setString(8, candidate.getPhone());

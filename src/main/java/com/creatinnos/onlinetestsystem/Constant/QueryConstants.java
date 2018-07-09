@@ -19,4 +19,20 @@ public class QueryConstants {
 	+"VALUES(?,?,?,?,?,?,?,?,?)";
 	public static String UPDATE_ORGANIZATIONUSER="update "+TableConstants.ORGANIZATIONUSER+" set NAME=?,ROLE=?,"
 			+ "USERNAME=?,PASSWORD=?,EMAIL=?,PHONENUMBER=?,LASTMODIFIEDDATE=? WHERE USERID=?";
+
+	//Category
+	//public static String SAVE_CATEGORY="INSERT INTO "+TableConstants.CATEGORY+"(CATEGORYNAME,SUBCATEGORYNAME,SUBJECTNAME) VALUES(?,??)";
+	public static String SAVE_CATEGORY="INSERT INTO "+TableConstants.CATEGORY+"(CATEGORYNAME,ORGANIZATIONID) VALUES(?,?)";
+	public static String FETCH_CATEGORY="SELECT * FROM "+TableConstants.CATEGORY+" WHERE ORGANIZATIONID =";
+	
+	public static String SAVE_SUB_CATEGORY="INSERT INTO "+TableConstants.SUBCATEGORY+"(SUBCATEGORYNAME,CATEGORYID,ORGANIZATIONID) VALUES(?,?,?)";
+	public static String FETCH_SUB_CATEGORY="SELECT * FROM "+TableConstants.SUBCATEGORY+" WHERE ORGANIZATIONID =";
+	
+	public static String SAVE_SUBJECT="INSERT INTO "+TableConstants.SUBJECT+"(SUBJECT,CATEGORYID,SUBCATEGORYID,ORGANIZATIONID) VALUES(?,?,?,?)";
+	public static String FETCH_SUBJECT="SELECT * FROM "+TableConstants.SUBJECT+" WHERE ORGANIZATIONID =";
+	
+	//Category
+	public static String FETCH_ALL_CATEGORY="SELECT * FROM "+TableConstants.CATEGORY;
+	
+	
 }

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+	"> -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+
+http://www.springframework.org/schema/beans/spring-beans.xsd
+
+http://www.springframework.org/schema/context
+
+http://www.springframework.org/schema/context/spring-context.xsd
+
+http://www.springframework.org/schema/mvc
+
+                           http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+	
+	<context:component-scan base-package="com.creatinnos.onlinetestsystem.rest" />
+	<mvc:annotation-driven/>
+	<bean id="ds"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/onlinetestsystem" />
+		<property name="username" value="babu" />
+		<property name="password" value="babu" />
+	</bean>
+
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="ds"></property>
+	</bean>
+
+	<bean id="edao"
+		class="com.creatinnos.onlinetestsystem.daocustomization.CreateConnection">
+		<property name="con" ref="jdbcTemplate"></property>
+	</bean> 
+
+  	<bean id="multipartResolver"
+
+        class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="1048576"/>
+    </bean>
+    
+    	<!-- Configure to plugin JSON as request and response in method handler -->
+	 <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="jsonMessageConverter"/>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- Configure bean to convert JSON to POJO and vice versa -->
+	<bean id="jsonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+	</bean>	
+	<!-- <bean
+    	class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter">
+	</bean>
+	 -->
+	
+</beans>  

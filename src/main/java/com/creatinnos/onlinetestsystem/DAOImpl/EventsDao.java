@@ -12,9 +12,9 @@ import com.creatinnos.onlinetestsystem.model.Event;
 import com.creatinnos.onlinetestsystem.model.Events;
 import com.creatinnos.onlinetestsystem.utils.DateUtil;
 
-public class EventsDAO {
+public class EventsDao {
 
-	static Logger log = Logger.getLogger(EventsDAO.class.getName());
+	static Logger log = Logger.getLogger(EventsDao.class.getName());
 
 	public Events findEvents() {
 		return executeFetch(QueryConstants.FETCH_ALL_EVENTINFO);

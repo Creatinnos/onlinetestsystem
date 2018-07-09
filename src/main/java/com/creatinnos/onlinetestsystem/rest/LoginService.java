@@ -2,30 +2,28 @@ package com.creatinnos.onlinetestsystem.rest;
 
 import java.util.List;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.creatinnos.onlinetestsystem.DAOImpl.LoginDao;
 import com.creatinnos.onlinetestsystem.model.ResponseModel;
 import com.creatinnos.onlinetestsystem.model.users.OrganizationUsers;
 
-@Path("/")
+@Controller
 public class LoginService {
 
 	/* Get actual class name to be printed on */
 	static Logger log = Logger.getLogger(LoginService.class.getName());
 	LoginDao loginDAO = new LoginDao();
 
-	@POST
-	@Path("/login")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public ResponseModel login(OrganizationUsers organizationUsers) {
+	@ResponseBody
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public ResponseModel login(@RequestBody OrganizationUsers organizationUsers) {
+		
 		List<OrganizationUsers> loginModels = loginDAO.findOrganization(organizationUsers.getUserName(), organizationUsers.getPassword());
 		ResponseModel  responseModel=new ResponseModel(); 
 		if (loginModels!=null && loginModels.size()>0) {
@@ -43,11 +41,9 @@ public class LoginService {
 		return responseModel;
 	}
 
-	@POST
-	@Path("/register")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public OrganizationUsers Register(OrganizationUsers organizationUsers) {
+	@ResponseBody
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	public OrganizationUsers Register(@RequestBody OrganizationUsers organizationUsers) {
 		List<OrganizationUsers> loginModels = loginDAO.findOrganization(organizationUsers.getUserName(),
 				organizationUsers.getPassword());
 		if (loginModels!=null && loginModels.size()>0) {

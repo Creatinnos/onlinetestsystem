@@ -1,9 +1,8 @@
 package com.creatinnos.onlinetestsystem.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class Answer {
+public class Answer extends Token{
 
 	private String examId;
 	private String candidateId;

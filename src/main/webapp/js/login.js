@@ -25,6 +25,7 @@ $(document).ready(function() {
 	$("#loginbtn").click(function(){
 		var username=$("#usernametxt").val();
 		var password=$("#passwordtxt").val();
+		alert("sdfds");
 		loginCheck(username,password);
 	});
 	$("#registerbtn").click(function(){

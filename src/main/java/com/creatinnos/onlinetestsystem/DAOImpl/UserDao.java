@@ -19,9 +19,9 @@ import com.creatinnos.onlinetestsystem.Constant.QueryConstants;
 import com.creatinnos.onlinetestsystem.daocustomization.CreateConnection;
 import com.creatinnos.onlinetestsystem.model.users.OrganizationUsers;
 
-public class UserDAO {
+public class UserDao {
 
-	static Logger log = Logger.getLogger(UserDAO.class.getName());
+	static Logger log = Logger.getLogger(UserDao.class.getName());
 
 	public List<OrganizationUsers> fetchAllUsers() {
 		return executeFetch(QueryConstants.FETCH_ALL_ORGANIZATIONUSER);

@@ -1,6 +1,8 @@
 package com.creatinnos.onlinetestsystem.model.candidate;
 
-public class Candidates {
+import com.creatinnos.onlinetestsystem.model.Token;
+
+public class Candidates extends Token{
 	
 	
 	private String candidateId=""; 
@@ -9,6 +11,8 @@ public class Candidates {
 	private String fatherName="";
 	private String motherName="";
 	private String dob="";
+	private String gender="";
+	
 	private String address="";
 	private String phone="";
 	private String email="";
@@ -52,6 +56,12 @@ public class Candidates {
 	}
 	public void setDob(String dob) {
 		this.dob = dob;
+	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 	public String getAddress() {
 		return address;

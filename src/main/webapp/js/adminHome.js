@@ -28,48 +28,57 @@ adminHomeNamespace.loadContents = function(){
 adminHomeNamespace.loadExamList = function(){
 	$("#ExamUpcoming").empty();
 	var eventData = [];
-	if(constants.ExamInfo.length > 0){
-		for(var i=0; i < constants.ExamInfo.length ; i++) {
-			var duration = "";
-			if(constants.ExamInfo[i].ExamDurationHours !== "0" && constants.ExamInfo[i].ExamDurationMin !== "0"){
-				duration = constants.ExamInfo[i].ExamDurationHours + " Hour(s) " + constants.ExamInfo[i].ExamDurationMin + " Minutes";
-			}else{
-				if(constants.ExamInfo[i].ExamDurationHours !== "0"){
-					duration = constants.ExamInfo[i].ExamDurationHours + " Hour(s)";
-				}else{
-					duration = constants.ExamInfo[i].ExamDurationMin + " Minutes";
-				}
-			}
-			var examDate = CommonNamespace.formatEventsCalDate(constants.ExamInfo[i].ExamStartDate,"disp") + " to " + CommonNamespace.formatEventsCalDate(constants.ExamInfo[i].ExamEndDate,"disp") + " | " + duration;
-			var examAvailability = '<div class="examList row" id=' + constants.ExamInfo[i].ExamId+ '>';
-			var progressClass = "";
-			var symbolTitle = "";
-			adminHomeNamespace.getDates(eventData,constants.ExamInfo[i].ExamStartDate,constants.ExamInfo[i].ExamEndDate,constants.ExamInfo[i].ExamName,duration);
-			if(constants.ExamInfo[i].progress === "Y"){
-				progressClass = "glyphicon glyphicon-ok-circle green";
-				symbolTitle = "Completed";
-			}else if(constants.ExamInfo[i].progress === "E"){
-				progressClass = "glyphicon glyphicon-stop red";
-				examAvailability = '<div class="examList row greyed">';
-				symbolTitle = "Exam Over";
-			}else{
-				progressClass = "glyphicon glyphicon-exclamation-sign warning";
-				symbolTitle = "In Complete";
-			}
-			
-			var examCont = examAvailability +
-			'<h4 class="examTitle col-md-7"><span title = "'+ symbolTitle +'" class="' + progressClass+ '"></span>' + constants.ExamInfo[i].ExamName + '</h4>'+
-			'<h5 class="col-md-5" style="margin-top: 14px;">' + examDate + '</h5>'+
-			'</div>';
-			
-			$(examCont).appendTo("#ExamUpcoming");
-		};
-	}else{
-		$('<h5 style="text-align:center;"  class="noData">No Data Available!</h5>').appendTo("#ExamUpcoming");
-	}
-	
 
-	               
+	var data ={
+			organizationId :sessionStorage.getItem('CTS_organizationId') 
+	}
+    $.ajax({
+    	url: constants.fetchOranizationExam,
+        type: "GET",
+        data: data,
+        dataType: 'JSON',
+        success: function(response){
+        	if(response.length > 0){
+        		for(var i=0; i < response.length ; i++) {
+        			var duration = response[i].examDuration.split(":")[0] + " Hour(s) " + response[i].examDuration.split(":")[1] + " Minutes";
+        			var examDate = CommonNamespace.formatEventsCalDate(response[i].examStartDate,"disp") + " to " + CommonNamespace.formatEventsCalDate(response[i].examEndDate,"disp") + " | " + duration;
+        			var examAvailability = '<div class="examList row" id=' + response[i].examId+ '>';
+        			var progressClass = "";
+        			var symbolTitle = "";
+        			adminHomeNamespace.getDates(eventData,response[i].examStartDate,response[i].examEndDate,response[i].examName,duration);
+        			if(response[i].progress === "Y"){
+        				progressClass = "glyphicon glyphicon-ok-circle green";
+        				symbolTitle = "Completed";
+        			}else if(response[i].progress === "E"){
+        				progressClass = "glyphicon glyphicon-stop red";
+        				examAvailability = '<div class="examList row greyed">';
+        				symbolTitle = "Exam Over";
+        			}else{
+        				progressClass = "glyphicon glyphicon-exclamation-sign warning";
+        				symbolTitle = "In Complete";
+        			}
+        			
+        			var examCont = examAvailability +
+        			'<h4 class="examTitle col-md-7"><span title = "'+ symbolTitle +'" class="' + progressClass+ '"></span>' + response[i].examName + '</h4>'+
+        			'<h5 class="col-md-5" style="margin-top: 14px;">' + examDate + '</h5>'+
+        			'</div>';
+        			
+        			$(examCont).appendTo("#ExamUpcoming");
+        			constants.ExamInfo.push(response[i]);
+        		};
+        	}else{
+        		$('<h5 style="text-align:center;"  class="noData">No Data Available!</h5>').appendTo("#ExamUpcoming");
+        	}
+        	
+        }
+      }).done(function(response) {
+    	  adminHomeNamespace.loadEventsForDynamicElement();
+      }).fail(function(jqXHR, textStatus) {
+          alert('Exam Fetch Failed');
+          console.log(jqXHR);
+          
+      });
+        	               
 	$(document).ready(function(){
 		$("#calendar").zabuto_calendar({
 			 today: true,
@@ -143,7 +152,7 @@ adminHomeNamespace.getDates = function(eventData,startDate, stopDate, examName, 
 
 adminHomeNamespace.pageEvents = function(){
 	$("#addNewExam").off().click(function(){
-		localStorage.setItem("CRT_AddNew", "new");
+		sessionStorage.setItem("CRT_AddNew", "new");
 		CommonNamespace.changeHref("#addNewExam");
 		CommonNamespace.getContainer();
 	});
@@ -171,15 +180,20 @@ adminHomeNamespace.pageEvents = function(){
         	adminHomeNamespace.loadExamList();
         }
     });
-	
+
+};
+
+adminHomeNamespace.loadEventsForDynamicElement =function()
+{
 	$("#ExamUpcoming .examList").off().click(function(){
-		localStorage.setItem("CRT_AddNew", "edit");
-		localStorage.setItem("CRT_ExamID", $(this).attr('id'));
+		sessionStorage.setItem("CRT_AddNew", "edit");
+		sessionStorage.setItem("CRT_ExamID", $(this).attr('id'));
 		CommonNamespace.changeHref("#addNewExam");
+		addNewExamNamespace.isEditMode=true;
 		CommonNamespace.getContainer();
 	});
 
-};
+}
 
 adminHomeNamespace.getHtmlFailed = function(){
 	$("#loginError").text("Some problem occured. Please try again later.");

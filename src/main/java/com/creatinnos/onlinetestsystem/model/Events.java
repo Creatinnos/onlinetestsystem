@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Events extends Token {
-
 	private List<Event> events=new ArrayList<Event>();
 
 	public List<Event> getEvents() {

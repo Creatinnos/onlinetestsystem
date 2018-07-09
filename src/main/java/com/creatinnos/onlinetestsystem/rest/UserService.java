@@ -10,37 +10,40 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import com.creatinnos.onlinetestsystem.DAOImpl.UserDAO;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.creatinnos.onlinetestsystem.DAOImpl.UserDao;
 import com.creatinnos.onlinetestsystem.model.users.OrganizationUsers;
 
-@Path("/")
+@Controller
 public class UserService {
 
-	@GET
-	@Path("/fetchAllUser")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
+	@ResponseBody
+	@RequestMapping(value = "/fetchAllUser", method = RequestMethod.GET )
 	public List<OrganizationUsers> loadAllUser(@QueryParam("organizationId") String organizationId) {
 		System.out.println(organizationId);
-		UserDAO userDAO = new UserDAO();
+		UserDao userDAO = new UserDao();
 		return userDAO.fetchUsers(organizationId);
 	}
 
-	@POST
-	@Path("/saveUser")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public OrganizationUsers saveUser(OrganizationUsers users) {
-		UserDAO userDAO = new UserDAO();
+	
+	@ResponseBody
+	@RequestMapping(value = "/saveUser", method = RequestMethod.POST )
+
+	public OrganizationUsers saveUser(@RequestBody OrganizationUsers users) {
+		UserDao userDAO = new UserDao();
 		return userDAO.saveUser(users);
 	}
 
-	@POST
-	@Path("/updateUser")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public OrganizationUsers updateUser(OrganizationUsers users) {
-		UserDAO userDAO = new UserDAO();
+	@ResponseBody
+	@RequestMapping(value = "/updateUser", method = RequestMethod.POST )
+
+	public OrganizationUsers updateUser(@RequestBody OrganizationUsers users) {
+		UserDao userDAO = new UserDao();
 		if (userDAO.updateUser(users)) {
 			System.out.println("save --> " + users);
 			return users;
@@ -48,12 +51,11 @@ public class UserService {
 		return null;
 	}
 
-	@POST
-	@Path("/updateAllUser")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<OrganizationUsers> updateUsers(List<OrganizationUsers> users) {
-		UserDAO userDAO = new UserDAO();
+	@ResponseBody
+	@RequestMapping(value = "/updateAllUser", method = RequestMethod.POST )
+
+	public List<OrganizationUsers> updateUsers(@RequestBody List<OrganizationUsers> users) {
+		UserDao userDAO = new UserDao();
 		if (userDAO.updateUsers(users)) {
 			System.out.println("save --> " + users);
 			return users;

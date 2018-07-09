@@ -16,7 +16,6 @@ import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
-import com.creatinnos.onlinetestsystem.Constant.QueryConstants;
 import com.creatinnos.onlinetestsystem.Constant.TableConstants;
 import com.creatinnos.onlinetestsystem.daocustomization.CreateConnection;
 import com.creatinnos.onlinetestsystem.daocustomization.ExecuteQuery;
@@ -79,6 +78,7 @@ public class LoginDao {
 	}
 
 	private static List<OrganizationUsers> executeFetch(String query) {
+		log.info(query);
 		try {
 			List<Map<String, Object>> maps = CreateConnection.getConnection().queryForList(query);
 			if (maps != null && maps.size() > 0) {

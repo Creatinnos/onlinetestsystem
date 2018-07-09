@@ -1,8 +1,6 @@
 package com.creatinnos.onlinetestsystem.model;
 
-import java.util.Date;
-
-public class Event {
+public class Event extends Token {
 	
 	private String event="";// : "RRB Practice Exam has been postponded. Exam schedule will be revealed shortly.", 
 	private String postedBy="";//: "Sam Andrew", 

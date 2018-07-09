@@ -3,7 +3,8 @@ var loginNamespace = {};
 var instructionNamespace = {};
 var adminHomeNamespace = {};
 var addNewExamNamespace = {};
-var addNewCategoryNamespace = {};
+var manageCategoryNamespace = {};
+var uploadNamespace = {};
 var manageUser = {};
 var error = {};
 var manageCandidate= {};
@@ -38,7 +39,7 @@ CommonNamespace.getContainer = function() {
 		document.title = "Creatinnos | Dashboard";
 		$(".adminHomeMenu").css("color", "#e7dfc6");
 		CommonNamespace.ajaxGetRequest("view/adminHome.html", '', '',
-				adminHomeNamespace.getHtmlSuccess, adminHomeNamespace.getHtmlFailed);
+				adminHomeNamespace.getHtmlSuccess, adminHomeNamespace.getHtmlFailed); 
 	}else if(window.location.href.indexOf("#addNewExam") > 0){
 		document.title = "Creatinnos | Add New Exam";
 		$(".addNewExamMenu").css("color", "#e7dfc6");
@@ -73,8 +74,13 @@ CommonNamespace.getContainer = function() {
 	else if(window.location.href.indexOf("#manageCategory") > 0){
 		document.title = "Creatinnos | Category";
 		CommonNamespace.ajaxGetRequest("view/manageCategory.html", '', '',
-				addNewCategoryNamespace.getHtmlSuccess, addNewCategoryNamespace.getHtmlFailed);
+				manageCategoryNamespace.getHtmlSuccess, manageCategoryNamespace.getHtmlFailed);
+	}else if(window.location.href.indexOf("#upload") > 0){
+		document.title = "Creatinnos | Category";
+		CommonNamespace.ajaxGetRequest("view/uploaddata.html", '', '',
+				uploadNamespace.getHtmlSuccess, uploadNamespace.getHtmlFailed);
 	}
+	
 	else{
 		document.title = "Creatinnos | Error Page";
 		CommonNamespace.ajaxGetRequest("view/error.html", '', '',
@@ -155,9 +161,9 @@ CommonNamespace.getContainer = function() {
 loginNamespace.getHtmlSuccess = function(response) {
 	$('#mainContent').empty();
 	$('#mainContent').append($(response)[1].outerHTML);
-	if (CommonNamespace.isAvailable(localStorage.getItem("CTS_rememberMe")) && !$("#remember").is(':checked')) {
+	if (CommonNamespace.isAvailable(sessionStorage.getItem("CTS_rememberMe")) && !$("#remember").is(':checked')) {
 		  $("#remember").trigger('click');
-		  $("#loginUser").val(localStorage.getItem('CTS_username'));
+		  $("#loginUser").val(sessionStorage.getItem('CTS_username'));
 		  $("#loginPw").val(CommonNamespace.decrypt());
 	}else{
 		localStorage.removeItem('encrypt');
@@ -170,6 +176,7 @@ CommonNamespace.pageEvents = function(){
 	$("#orgLogin").off().click(function(){
 		var userName = $("#orgLoginUser").val();
 		var password = $("#orgLoginPw").val();
+		
 		if(userName !== "" && password !== "") {
 			CommonNamespace.startLoader();
 			$("#orgLoginError").hide();
@@ -182,9 +189,9 @@ CommonNamespace.pageEvents = function(){
 					$("#orgLoginError").text("Please Enter Username");
 				}else if(password === ""){
 					$("#orgLoginError").text("Please Enter Password");
-				}
-				$("#orgLoginError").show();
+				}				
 			}
+			$("#orgLoginError").show();
 		}
 	});
 	$("#candidateLogin").off().click(function(){
@@ -203,8 +210,8 @@ CommonNamespace.pageEvents = function(){
 				}else if(password === ""){
 					$("#candidateLoginError").text("Please Enter Password");
 				}
-				$("#candidateLoginError").show();
 			}
+			$("#candidateLoginError").show();
 		}
 	});
 
@@ -268,7 +275,6 @@ CommonNamespace.pageEvents = function(){
 					data: JSON.stringify(data),
 					dataType: 'JSON',
 					success: function(response){
-						console.log(response);
 						if(response==undefined)
 							{
 							$("#regError").text("User Already Exists");
@@ -337,8 +343,9 @@ CommonNamespace.pageEvents = function(){
 		if(selectedMenu === "Home") {
 			CommonNamespace.changeHref("#adminHome");
 		}else if(selectedMenu === "Add New Exam") {
+			addNewExamNamespace.isEditMode=false;
 			CommonNamespace.changeHref("#addNewExam");
-      localStorage.setItem("CRT_AddNew", "new");
+      sessionStorage.setItem("CRT_AddNew", "new");
 		}else if(selectedMenu === "Upcoming Exams") {
 			CommonNamespace.changeHref("#addNewExam");
 		}else if(selectedMenu === "Exam History") {
@@ -355,7 +362,10 @@ CommonNamespace.pageEvents = function(){
 			CommonNamespace.changeHref("#manageCategory");
 		}else if(selectedMenu === "Manage News &amp; Events") {
 			CommonNamespace.changeHref("#addNewExam");
+		}else if(selectedMenu === "Upload") {
+			CommonNamespace.changeHref("#upload");
 		}
+		
 		state = false;
 		$(this).find('h4').css("color", "#E9F1F7");
 		$(this).css("color", "#e7dfc6");
@@ -384,8 +394,8 @@ CommonNamespace.checkLogin = function(userName, password,loginUserType) {
         CommonNamespace.encrypt(password);
         rememberMe = true;
     }
-    localStorage.setItem('CTS_username', userName);
-    localStorage.setItem('CTS_rememberMe', rememberMe);
+    sessionStorage.setItem('CTS_username', userName);
+    sessionStorage.setItem('CTS_rememberMe', rememberMe);
     
 	$.ajaxSetup({
         cache: false
@@ -399,20 +409,43 @@ CommonNamespace.checkLogin = function(userName, password,loginUserType) {
         success: function(response){
         	if(response.responseMessage == "Success"){
         		$("#loginError").hide();
-    			localStorage.setItem("CTS_username",userName.substring(userName.substring(0).toUpperCase(), userName.length));
+    			sessionStorage.setItem("CTS_username",response["organizationUsers"].name);
     			CommonNamespace.changeHref("#adminHome");
     			CommonNamespace.getContainer();
+    			sessionStorage.setItem('CTS_organizationId', response["organizationUsers"].organizationId);
+    			sessionStorage.setItem('CTS_userId', response["organizationUsers"].userId);
     			
     		}else{
-    			$("#loginError").text("Invalid Username/Password");
-    			$("#loginError").show();
+    			if(loginUserType=="Organization")
+    				{
+	    				$("#orgLoginError").text("Invalid Username/Password");
+						$("#orgLoginError").show();
+    				}
+    			else if(loginUserType=="Candidate")
+				{
+    				$("#candidateLoginError").text("Invalid Username/Password");
+					$("#candidateLoginError").show();
+				}
+				else
+    				{
+    					$("#loginError").text("Invalid Username/Password");
+    					$("#loginError").show();
+    				}
     			CommonNamespace.stopLoader();
     		}
         },
         error: function(response){
         	console.log(response);
-        	$("#loginError").text("Some problem occured. Please try again later.");
-        	$("#loginError").show();
+        	if(loginUserType=="Organization")
+			{
+				$("#orgLoginError").text("Some problem occured. Please try again later.");
+				$("#orgLoginError").show();
+			}
+			else if(loginUserType=="Candidate")
+			{
+				$("#candidateLoginError").text("Some problem occured. Please try again later.");
+				$("#candidateLoginError").show();
+			}
         	CommonNamespace.stopLoader();
         }
     });
@@ -475,11 +508,11 @@ CommonNamespace.encrypt = function(password) {
      encrypt.push(data);
         encryptedString = encryptedString + "" + data;
     }
-    localStorage.setItem("encrypt", JSON.stringify(encrypt.reverse()));
+    sessionStorage.setItem("encrypt", JSON.stringify(encrypt.reverse()));
     return encryptedString;
 };
 CommonNamespace.decrypt = function() {
-    var encrypt = JSON.parse(localStorage.getItem("encrypt")).reverse();
+    var encrypt = JSON.parse(sessionStorage.getItem("encrypt")).reverse();
     var decrypt = '';
     $.each(encrypt, function(key, value) {
         decrypt = decrypt + String.fromCharCode(value - 10);
@@ -510,7 +543,7 @@ CommonNamespace.stopLoader = function() {
 
 //Function to stop the loader
 CommonNamespace.common = function() {
-	$("#userId").text(localStorage.getItem("CTS_username").toUpperCase());
+	$("#userId").text(sessionStorage.getItem("CTS_username").toUpperCase());
 	$('<span class="caret"></span>').appendTo("#userId");
 	$("#headerSec,.headerBlock").show();
 	var layoutHeight  = $(window).height() - ($("#headerSec").outerHeight() + $(".headerBlock").outerHeight());

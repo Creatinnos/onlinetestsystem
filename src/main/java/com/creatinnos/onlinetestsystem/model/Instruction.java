@@ -1,5 +1,5 @@
 package com.creatinnos.onlinetestsystem.model;
 
-public class Instruction {
+public class Instruction extends Token{
 
 }

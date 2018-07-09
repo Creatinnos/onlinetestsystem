@@ -57,7 +57,7 @@
 								</div>
 								<div class="col-md-6">
 									<label class="col-md-4 col-xs-6" for="newExamName">Exam Name <span style="color:red">*</span> : </label>
-									<input type="text" class="formFields col-xs-6 form-control editMode" id="newExamName"/>
+									<input type="text" class="formFields col-xs-6 form-control editMode" id="newExamName" value="sdfsd"/>
 									<label class="col-md-8 col-xs-6 viewMode" id="newNameLab"></label>
 								</div>
 							</div>
@@ -65,7 +65,7 @@
 								<div class="col-md-6">
 									<label class="col-md-4 col-xs-6" for="newExamDate">Exam Start Date <span style="color:red">*</span> : </label>
 									<div class="input-group dateFields date datepicker editMode"  data-provide="datepicker">
-									    <input type="text" class="form-control" id="newExamStartDate">
+									    <input type="text" class="form-control" id="newExamStartDate" value="23-06-2018">
 									        <div class="input-group-addon">
 									            <span class="glyphicon glyphicon-th"></span>
 									       </div>
@@ -75,7 +75,7 @@
 								<div class="col-md-6">
 									<label class="col-md-4 col-xs-6" for="newExamDate">Exam End Date <span style="color:red">*</span> : </label>
 									<div class="input-group dateFields date datepicker editMode" data-provide="datepicker">
-									    <input type="text" class="form-control datepicker" id="newExamEndDate">
+									    <input type="text" class="form-control datepicker" id="newExamEndDate" value="23-06-2018">
 									    <div class="input-group-addon">
 									        <span class="glyphicon glyphicon-th"></span>
 									    </div>
@@ -88,9 +88,9 @@
 								<div class="col-md-6">
 									<label class="col-md-4 col-xs-6" for="newExamHours">Exam Duration <span style="color:red">*</span> : </label>
 									<div class= "editMode">
-										<input type="number" class="timeFields form-control" id="newExamHours" placeholder="Hours" min="0" max="4"/>
+										<input type="number" class="timeFields form-control" id="newExamHours" placeholder="Hours" min="0" max="4" value="2"/>
 										<span> : </span>
-										<input type="number" class="timeFields form-control" id="newExamMin" placeholder="Minutes" min="0" max="50"/>
+										<input type="number" class="timeFields form-control" id="newExamMin" placeholder="Minutes" min="0" max="50" value="32"/>
 									</div>
 									<label class="col-md-8 col-xs-6 viewMode" id="newDurationLab"></label>
 								</div>
@@ -108,7 +108,7 @@
 									<label class="col-md-4 col-xs-6" for="newCandidate">Candidate Type : </label>
 									<select class="col-md-8 col-xs-6 formFields form-control editMode" id="newCandidateType">
 										<option value=""> --- Select --- </option>
-										<option value="instant">Instant</option>
+										<option value="instant" selected>Instant</option>
 										<option value="available">Available</option>
 									 </select>
 									 <label class="col-md-8 col-xs-6 viewMode" id="newCandiLab"></label>
@@ -123,13 +123,13 @@
 							<div class="row">
 								<div class="col-md-6">
 									<label class="col-md-4 col-xs-6" for="newPassPercent">Pass Mark : </label>
-									<input type="text" class="formFields col-xs-6 form-control editMode" id="newPassPercent"/>
+									<input type="text" class="formFields col-xs-6 form-control editMode" id="newPassPercent" value="34"/>
 									<label class="col-md-8 col-xs-6 viewMode" id="newPassLab"></label>
 								</div>
 								<div class="col-md-6">
 									<label class="col-md-4 col-xs-6" for="negativeMarks">Negative Marks : </label>
 				                     <div class="material-switch editMode">
-				                         <input id="negativeMarks" name="negativeMarks" type="checkbox"/>
+				                         <input id="negativeMarks" name="negativeMarks" type="checkbox" checked/>
 				                         <label for="negativeMarks" class="label-success"></label>
 				                     </div>
 				                     <label class="col-md-8 col-xs-6 viewMode" id="newNegativeLab"></label>
@@ -152,8 +152,10 @@
                           	<div class = "row">
                           		<div class="col-md-4">
 		                          	<div class="form-group">
-							            <label for="cateQuery">Question Category:</label>
-							            <input class="form-control" name="cateQuery" id="cateQuery" placeholder="(eg) Analytical, Logical ..." type="text">              
+		                          		<div class="row col-md-12">
+							            	<label for="cateQuery">Question Category:    </label><br/>
+							            	<input class="form-control" style="width:100%;" name="cateQuery" id="cateQuery" placeholder="(eg) Analytical, Logical ..." type="text">
+							            </div>              
 							        </div>
 					        	</div>
 					        	<div class="col-md-4">

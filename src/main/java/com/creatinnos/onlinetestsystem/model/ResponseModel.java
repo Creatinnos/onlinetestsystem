@@ -2,7 +2,7 @@ package com.creatinnos.onlinetestsystem.model;
 
 import com.creatinnos.onlinetestsystem.model.users.OrganizationUsers;
 
-public class ResponseModel {
+public class ResponseModel extends Token {
 	private String responseMessage;
 	private OrganizationUsers organizationUsers;
 	

@@ -1,7 +1,9 @@
 package com.creatinnos.onlinetestsystem.model;
 
-public class NewExam extends Token{
+import java.util.List;
 
+public class NewExam extends Token{
+	private String examId;
 	private String category;
 	private String subCategory;
 	private String subject;
@@ -10,10 +12,21 @@ public class NewExam extends Token{
 	private String examStartDate;
 	private String examEndDate;
 	private String examDuration;
-	private String examStartTime;
-	private String examPassMark;
+	private String examTime;
+	private Double passMark;
 	private boolean isNegativeMarkApplicable;
+	private List<String> candidates;
+	private String candidatesType;
 	private String instruction;
+	private String progress;
+	
+	
+	public String getExamId() {
+		return examId;
+	}
+	public void setExamId(String examId) {
+		this.examId = examId;
+	}
 	
 	public String getCategory() {
 		return category;
@@ -63,17 +76,17 @@ public class NewExam extends Token{
 	public void setExamDuration(String examDuration) {
 		this.examDuration = examDuration;
 	}
-	public String getExamStartTime() {
-		return examStartTime;
+	public String getExamTime() {
+		return examTime;
 	}
-	public void setExamStartTime(String examStartTime) {
-		this.examStartTime = examStartTime;
+	public void setExamTime(String examTime) {
+		this.examTime = examTime;
 	}
-	public String getExamPassMark() {
-		return examPassMark;
+	public Double getPassMark() {
+		return passMark;
 	}
-	public void setExamPassMark(String examPassMark) {
-		this.examPassMark = examPassMark;
+	public void setPassMark(Double passMark) {
+		this.passMark = passMark;
 	}
 	public boolean isNegativeMarkApplicable() {
 		return isNegativeMarkApplicable;
@@ -81,12 +94,40 @@ public class NewExam extends Token{
 	public void setNegativeMarkApplicable(boolean isNegativeMarkApplicable) {
 		this.isNegativeMarkApplicable = isNegativeMarkApplicable;
 	}
+	public List<String> getCandidates() {
+		return candidates;
+	}
+	public void setCandidates(List<String> candidates) {
+		this.candidates = candidates;
+	}
+	public String getCandidatesType() {
+		return candidatesType;
+	}
+	public void setCandidatesType(String candidatesType) {
+		this.candidatesType = candidatesType;
+	}
 	public String getInstruction() {
 		return instruction;
 	}
 	public void setInstruction(String instruction) {
 		this.instruction = instruction;
 	}
-	
+	public String getProgress() {
+		return progress;
+	}
+	public void setProgress(String progress) {
+		this.progress = progress;
+	}
+	@Override
+	public String toString() {
+		return "NewExam [examId=" + examId + ", category=" + category
+				+ ", subCategory=" + subCategory + ", subject=" + subject + ", organizationId=" + organizationId
+				+ ", examName=" + examName + ", examStartDate=" + examStartDate + ", examEndDate=" + examEndDate
+				+ ", examDuration=" + examDuration+ ", examTime="
+				+ examTime + ", passMark=" + passMark + ", isNegativeMarkApplicable=" + isNegativeMarkApplicable
+				+ ", candidates=" + candidates + ", candidatesType=" + candidatesType + ", instruction=" + instruction
+				+ ", progress=" + progress + "]";
+	}
+		
 	
 }

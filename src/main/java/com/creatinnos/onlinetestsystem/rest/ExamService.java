@@ -2,45 +2,61 @@ package com.creatinnos.onlinetestsystem.rest;
 
 import java.util.ArrayList;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import javax.ws.rs.PathParam;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.creatinnos.onlinetestsystem.DAOImpl.ExamDao;
 import com.creatinnos.onlinetestsystem.model.NewExam;
 
-@Path("/exam")
+@Controller
 public class ExamService {
 
-	@POST
-	@Path("/addExam")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public String addNewExam(NewExam newExam) {
+	@ResponseBody
+	@RequestMapping(value = "/saveExam", method = RequestMethod.POST )
+
+	public NewExam addNewExam(@RequestBody NewExam newExam) {
 		ExamDao dao=new ExamDao();
 		dao.saveNewExam(newExam);
 		System.out.println("consumeJSONList Client : " + newExam.toString());;
-		return "yes";
+		return newExam;
 	}
 
-	@GET
-	@Path("/fetchAllExam")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
+	@ResponseBody
+	@RequestMapping(value = "/updateExam", method = RequestMethod.POST )
+
+	public NewExam updateExam(@RequestBody NewExam newExam) {
+		ExamDao dao=new ExamDao();
+		dao.updateExam(newExam);
+		System.out.println("consumeJSONList Client : " + newExam.toString());;
+		return newExam;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/fetchAllExam", method = RequestMethod.GET )
+
 	public ArrayList<NewExam> fetchAllExamList() {
 		ExamDao dao=new ExamDao();
 		return dao.fetchAllExam();
 	}
-	
-	@GET
-	@Path("/fetchExam")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public ArrayList<NewExam> fetchExamList(String examId) {
+
+	@ResponseBody
+	@RequestMapping(value = "/fetchExam", method = RequestMethod.GET )
+
+	public ArrayList<NewExam> fetchExamList(@PathParam("examId") String examId) {
 		ExamDao dao=new ExamDao();
 		return dao.fetchExam(examId);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/fetchOranizationExam", method = RequestMethod.GET )
+	public ArrayList<NewExam> fetchOrganizationExamList( @RequestParam(required = false, value = "organizationId") String oranizationId,@RequestParam(required = false, value = "token") String token) {
+		ExamDao dao=new ExamDao();
+		return dao.fetchOrganizationExam(oranizationId);
 	}
 }

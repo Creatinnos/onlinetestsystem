@@ -1,17 +1,41 @@
 var constants = {};
 
 constants.remoteUrl1="http://ec2-52-66-177-248.ap-south-1.compute.amazonaws.com:8080";
-constants.remoteUrl2="http://localhost:11958";//"http://ec2-13-127-67-247.ap-south-1.compute.amazonaws.com";
+constants.remoteUrl2="http://localhost:8080";//"http://ec2-13-127-67-247.ap-south-1.compute.amazonaws.com";
 constants.projectName="onlinetestsystem";
 
 constants.doLogin = constants.remoteUrl2 + "/" +constants.projectName + "/rest/login";
 constants.doRegister = constants.remoteUrl2 + "/" +constants.projectName + "/rest/register";
+
 constants.fetchAllCandidates = constants.remoteUrl2 + "/" +constants.projectName + "/rest/fetchAllCandidates";
 constants.saveCandidates = constants.remoteUrl2 + "/" +constants.projectName + "/rest/saveCandidates";
 constants.updateCandidates = constants.remoteUrl2 + "/" +constants.projectName + "/rest/updateCandidates";
+
+constants.fetchCategory = constants.remoteUrl2 + "/" +constants.projectName + "/rest/fetchCategory";
+constants.saveCategory = constants.remoteUrl2 + "/" +constants.projectName + "/rest/saveCategory";
+constants.saveSubCategory = constants.remoteUrl2 + "/" +constants.projectName + "/rest/saveSubCategory";
+constants.saveSubject = constants.remoteUrl2 + "/" +constants.projectName + "/rest/saveSubject";
+
+constants.saveExam = constants.remoteUrl2 + "/" +constants.projectName + "/rest/saveExam";
+constants.updateExam = constants.remoteUrl2 + "/" +constants.projectName + "/rest/updateExam";
+
+constants.saveQuestion  = constants.remoteUrl2 + "/" +constants.projectName + "/rest/saveQuestion";
+constants.fetchQuestion  = constants.remoteUrl2 + "/" +constants.projectName + "/rest/fetchQuestion";
+constants.fetchExamMappedQuestion  = constants.remoteUrl2 + "/" +constants.projectName + "/rest/fetchExamMappedQuestion";
+constants.updateQuestion  = constants.remoteUrl2 + "/" +constants.projectName + "/rest/updateQuestion";
+constants.deleteQuestion  = constants.remoteUrl2 + "/" +constants.projectName + "/rest/deleteQuestion";
+constants.deleteExamMappedQuestion  = constants.remoteUrl2 + "/" +constants.projectName + "/rest/deleteExamMappedQuestion";
+
+constants.uploadExcel=constants.remoteUrl2 + "/" +constants.projectName + "/rest/uploadExcel";
+
+constants.fetchExam=constants.remoteUrl2 + "/" +constants.projectName + "/rest/fetchExam";
+constants.fetchOranizationExam=constants.remoteUrl2 + "/" +constants.projectName + "/rest/fetchOranizationExam";
+
 constants.fetchAllUser = constants.remoteUrl2 + "/" +constants.projectName + "/rest/fetchAllUser";
 constants.saveUser = constants.remoteUrl2 + "/" +constants.projectName + "/rest/saveUser";
 constants.updateUser = constants.remoteUrl2 + "/" +constants.projectName + "/rest/updateUser";
+
+
 
 constants.instructions = [
 		"Total number of questions : 20.",
@@ -32,35 +56,11 @@ constants.events = [
 
 constants.questCate = ["Analytical", "Logical", "Reasoning"];
 
-constants.category = [
-  {cateId : "CT01", categoryName : "SSLC"},
-  {cateId : "CT02", categoryName : "HSC"},
-  {cateId : "CT03", categoryName : "BE"},
-  {cateId : "CT04", categoryName : "B.Sc"},
-  {cateId : "CT05", categoryName : "Java Developer"},
-  {cateId : "CT06", categoryName : "UI Developer"}
-];
+constants.category = [];
 
-constants.subCategory = [
-  {subCateId : "SCT01", Category: "CT01", subCategoryName : "MidTerm"},
-  {subCateId : "SCT02", Category: "CT01", subCategoryName : "Pre-Quarterly"},
-  {subCateId : "SCT03", Category: "CT02", subCategoryName : "Pre-Half Yearly"},
-  {subCateId : "SCT04", Category: "CT03", subCategoryName : "CSE"},
-  {subCateId : "SCT05", Category: "CT04", subCategoryName : "Chemistry"},
-  {subCateId : "SCT06", Category: "CT05", subCategoryName : "Core Java"},
-  {subCateId : "SCT06", Category: "CT05", subCategoryName : "Advanced Java"},
-  {subCateId : "SCT07", Category: "CT06", subCategoryName : "Web Technologies"},
-];
+constants.subCategory = [];
 
-constants.subject = [
-   { subId : "SUB01", SubCategory : "SCT01", SubjectName : "Physcis" },
-   { subId : "SUB02", SubCategory : "SCT01", SubjectName : "Chemistry" },
-   { subId : "SUB03", SubCategory : "SCT02", SubjectName : "Biology" },
-   { subId : "SUB04", SubCategory : "SCT02", SubjectName : "History" },
-   { subId : "SUB05", SubCategory : "SCT03", SubjectName : "English" },
-   { subId : "SUB06", SubCategory : "SCT04", SubjectName : "Operating System" },
-   { subId : "SUB07", SubCategory : "SCT05", SubjectName : "Inorganic Chemistry" },
-];
+constants.subject = [];
 
 constants.candidates = [
       { candidateID : "CAN01",Category: "CT01", Candidate: "SSC:B"},

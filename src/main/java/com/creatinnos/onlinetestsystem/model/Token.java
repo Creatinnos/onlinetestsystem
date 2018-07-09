@@ -2,8 +2,7 @@ package com.creatinnos.onlinetestsystem.model;
 
 public class Token {
 
-	private String token = "token"+Math.random();
-
+	private String token;
 
 	public String getToken() {
 		return token;
